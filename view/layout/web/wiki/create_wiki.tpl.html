@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>wiki后台</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <script src="<?=$data['static_url']?>/js/jquery-1.9.1.min.js"></script>
+    <script src="/static/script/common/validate/jquery.validate.js"></script>
+    <script src="/static/script/common/validate/jquery.form.js"></script>
+    <style>
+        #create_wiki:not(select) .error
+        {
+            color:red;
+        }
+        #create_wiki  select.error {color:black;}
+    </style>
+</head>
+<body>
+<div class="goods-list-main">
+    <ul class="breadcrumb">
+        <li>首页<span class="divider">/</span></li>
+        <li>wiki后台<span class="divider">/</span></li>
+        <li class="active">创建wiki</li>
+    </ul>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>创建wiki</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=joymewiki&a=createWiki" id="create_wiki">
+                <div class="my-center">
+                    <div class="control-group">
+                        <label class="control-label" for="wiki_name">WIKI名称:</label>
+                        <input type="text" name="wiki_name"  id="wiki_name">
+                        <span style="color:red" id="error_wiki_name"></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="wiki_key">WIKI Key:</label>
+                        <input type="text" name="wiki_key" id="wiki_key">
+                        <span id="error_wiki_key" style="color:red"></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="wiki_type">域名类型:</label>
+                        <select name="wiki_type" id="wiki_type">
+                            <option value="">请选择</option>
+                            <option value="1">原生WIKI</option>
+                            <option value="2">数字链WIKI</option>
+                        </select>
+                        <span id="error_wiki_type" style="color:red"></span></td>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="is_secondary_domain">是否二级域名:</label>
+                        <select name="is_secondary_domain" id="is_secondary_domain">
+                            <option value="">请选择</option>
+                            <option value="1">是</option>
+                            <option value="0">否</option>
+                        </select>
+                        <span id="error_is_secondary_domain" style="color:red"></span></td>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="create_reason">创建理由:</label>
+                        <select name="create_reason" id="create_reason">
+                            <option value="">请选择</option>
+                            <option value="1">发行</option>
+                            <option value="2">商务</option>
+                            <option value="3">自运营</option>
+                            <option value="4">玩家申请</option>
+                            <option value="5">其他</option>
+                        </select>
+                        <span id="error_create_reason" style="color:red"></span></td>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="create_reason">是否需要手机版首页:</label>
+                        &nbsp;&nbsp;
+                        是<input type="radio" value="1" name="is_mobile">
+                        &nbsp;&nbsp;&nbsp;
+                        否<input type="radio" value="0" name="is_mobile" checked>
+                        <span id="error_is_mobile" style="color:red"></span></td>
+                    </div>
+                    <br class="control-group">
+                    <label class="control-label">备注:</label>
+                    <textarea name="create_note" id="create_note" cols="1" rows="5"></textarea>
+                    </br>
+                    <span id="error_create_note" style="color:red"></span></td>
+                    <div class="control-group">
+                        <label class="control-label"><b>SEO信息</b>:</label>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="wiki_title">title:</label>
+                        <input type="text" name="wiki_title" id="wiki_title">
+                        <span id="error_wiki_title" style="color:red"></span></td>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="wiki_keywords">keywords:</label>
+                        <input type="text" name="wiki_keywords" id="wiki_keywords">
+                        <span id="error_wiki_keywords" style="color:red"></span></td>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="wiki_description">description:</label>
+                        <input type="text" name="wiki_description" id="wiki_description">
+                        <span id="error_wiki_description" style="color:red"></span></td>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-success" id="submitBtn" value="提交开通">&nbsp;&nbsp;
+                        <a href="?c=joymewiki&a=wikiList"  class="btn btn-success" style="height: 20px;">返回</a>
+                    </div>
+                </div>
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+<!--loading处理-->
+<div id="loading" style="display:none;position:absolute; top:350px; left:240px;">
+    <img src="/static/image/loading.gif">
+</div>
+<!--loading结束-->
+</body>
+</html>
+<script>
+    $(document).ready(function() {
+
+        var hosts = window.location.host.split('.');
+        var domain = hosts[hosts.length-1];
+        var reporturl = 'http://webcache.joyme.'+domain+'/wiki/title/report.do';
+
+        $("#create_wiki").validate({
+            rules: {
+                wiki_name: {
+                    required: true,
+                    maxlength:30
+                },
+                wiki_key:{
+                    required: true,
+                    minlength: 2,
+                    maxlength:20,
+                    remote: {
+                        url: "?c=joymewiki&a=checkWikiKeyIsExist",
+                        type: "post",
+                        dataType: "json",
+                        data:{
+                            wiki_key: function(){
+                                return $("#wiki_key").val();
+                            }
+                        },
+                        dataFilter: function (data) {　　　　//判断控制器返回的内容
+                            var json = eval('(' + data + ')');
+                            if (json['rs'] == 2) {
+                                return true;
+                            }
+                            else {
+                                return false;
+                            }
+                        }
+                    },
+                    levelLimit:true
+                },
+                wiki_type:{
+                    required: true
+                },
+                is_secondary_domain:{
+                    required: true
+                },
+                create_reason:{
+                    required: true
+                },
+                wiki_title:{
+                    required: true,
+                    maxlength:50
+                },
+                wiki_keywords:{
+                    required: true,
+                    maxlength:200
+                },
+                wiki_description:{
+                    required: true,
+                    maxlength:200
+                }
+            },
+            messages:{
+                wiki_name: {
+                    required: "请填写wiki名称",
+                    maxlength: "wiki名称不能大于30个字符"
+                },
+                wiki_key:{
+                    required: "请填写wiki key",
+                    minlength: "wiki key不能小于2个字符",
+                    maxlength:"wiki key不能大于20个字符",
+                    remote: "wiki key已存在"
+                },
+                wiki_type:{
+                    required: "请选择wiki类型"
+                },
+                is_secondary_domain:{
+                    required: "请选择是否二级域名"
+                },
+                create_reason:{
+                    required: "请选择创建理由"
+                },
+                wiki_title:{
+                    required: "请填写wiki title",
+                    maxlength:"title不能大于150个字符"
+                },
+                wiki_keywords:{
+                    required: "请填写wiki keywords",
+                    maxlength:"keywords不能大于600个字符"
+                },
+                wiki_description:{
+                    required: "请填写wiki description",
+                    maxlength:"description不能大于600个字符"
+                }
+            },
+            submitHandler:function(form){
+                jQuery(form).ajaxSubmit({
+                    beforeSend: function() {
+                        $('#loading').show();
+                        $('.btn-success').attr("disabled", true);
+                    },
+                    success: function(msg) {
+                        $('#loading').hide();
+                        var data = eval('(' + msg + ')');
+                        if(data['rs']==0){
+                            var wikikey = $("#wiki_key").val();
+                            var wiki_type = $('#wiki_type').val();
+                            $.ajax({
+                                url: reporturl,
+                                type: "post",
+                                async: false,
+                                data: {'wikikey':wikikey,'wikiname':$('#wiki_name').val()},
+                                dataType: "jsonp",
+                                jsonpCallback: "reportcallback",
+                                success: function (msg) {
+                                    console.log('report ok!'+wikikey+' name: '+$('#wiki_name').val());
+                                }
+                            });
+                            alert('上报wiki词条结束');
+                            window.location.href = '?c=joymewiki&a=addsh&wikikey='+wikikey+'&wiki_type='+wiki_type;
+                            return false;
+                        }
+                    }
+                });
+            }
+        });
+        //自定义wiki key验证方法
+        jQuery.validator.addMethod("levelLimit",function(value, element){
+            return this.optional(element) || /^[a-zA-Z][a-zA-Z0-9]*$/.test(value);
+        },"wiki key 只能是数字字母，并且不能以数字开头!");
+    });
+
+</script>

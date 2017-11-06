@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>文章列表</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common/jquery.datetimepicker.css">
+    <script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+    <script src="http://static.joyme.com/pc/wiki/tuji/js/layer.js"></script>
+    <script src="/static/script/common/jquery.datetimepicker.full.js"></script>
+    <script src="/static/script/jgame.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>查询条件</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=jchanneldata&a=alist">
+                <input type="hidden" name="gid" id="gid">
+                <input type="hidden" name="hiddengamename" id="hiddengamename">
+                <div class="my-left">
+                    <div class="control-group">
+                        <label class="control-label" >标签类型:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <select name="labeltype">
+                                <option value="1" <?php if($labeltype==1){echo 'selected="selected"';}?>>游戏</option>
+                                <option value="2" <?php if($labeltype==2){echo 'selected="selected"';}?>>栏目</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" >标签名称:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <input type="text" style="height: 16px;" name="labelname" id="labelname" value="<?php echo $labelname;?>" placeholder="请输入要查找的标签名称">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" >文章标题:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <input type="text" style="height: 16px;" name="arctitle" value="<?php echo $arctitle;?>" placeholder="请输入要查找的文章标题">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" >合作渠道:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <?php foreach($jchannellists as $key=>$val):?>
+                            <input type="checkbox" name="cid[]" value="<?php echo $val['cid'];?>" <?php echo $val['checked'];?>><?php echo $val['channel_name'];?>
+                            <?php endforeach;?>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-right">
+                    <div class="control-group">
+                        <label class="control-label" >发布时间开始:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <input type="text" style="height: 16px;" name="begintime" id="begintime" value="<?php echo $begintime;?>" placeholder="请输入要查找的发布时间">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" >发布时间结束:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <input type="text" style="height: 16px;" name="endtime" id="endtime" value="<?php echo $endtime;?>" placeholder="请输入要查找的发布时间">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" >内容类别:</label>
+                        <div class="controls">
+                            <?php foreach($allatypes as $key=>$val):?>
+                            <input type="checkbox" name="atype[]" value="<?php echo $key;?>" <?php echo $val['checked'];?>><?php echo $val['atype_desc'];?>
+                            <?php endforeach;?>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="submit" class="btn btn-success" value="查询">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>列表</h5>
+        </div>
+        <div class="content-box-content" style="">
+            <table class="table table-bordered table-hover" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th>文章标题</th>
+                    <th>标签类型</th>
+                    <th>标签名称</th>
+                    <th>标签ID</th>
+                    <th>发布时间</th>
+                    <th>内容类型</th>
+                    <?php foreach($jchannellists as $key=>$val):?>
+                    <th><?php echo $val['channel_name'];?></th>
+                    <?php endforeach;?>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(empty($list)):?>
+                <tr class="warning">
+                    <td colspan="12">暂无数据</td>
+                </tr>
+                <?php else:?>
+                <?php foreach($list as $key=>$val):?>
+                <tr>
+                    <td><a href="<?php echo $val['url'];?>" target="_blank"><?php echo $val['title'];?></a></td>
+                    <td><?php echo $val['datatype'];?></td>
+                    <td><?php echo $val['gameName'];?></td>
+                    <td><?php echo $val['gid'];?></td>
+                    <td><?php echo $val['ctime'];?></td>
+                    <td><?php echo $val['atype_desc'];?></td>
+                    <?php foreach($val['channels'] as $k=>$v):?>
+                    <td><?php echo $v;?></td>
+                    <?php endforeach;?>
+                    <td><?php echo $val['op'];?></td>
+                </tr>
+                <?php endforeach;?>
+                <?php endif;?>
+                </tbody>
+            </table>
+            <div class="pagination pagination-right">
+                <ul>
+                    <?php echo $phtml;?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(".active a").css('background-color','#5bb75b');
+    $(".active a").css('color','black');
+    $(".admin_page a").css('cursor','pointer');
+    $('#begintime').datetimepicker({
+        timepicker:false,
+        format:'Y-m-d'
+    });
+    $('#endtime').datetimepicker({
+        timepicker:false,
+        format:'Y-m-d'
+    });
+    // 修改状态
+    $(".status").click(function(){
+        var _that = this;
+        var aid = $(this).data('aid');
+        var isblock = $(this).data('isblock');
+        layer.confirm('确定要修改么？', {
+            btn: ['确定','取消'] //按钮
+        }, function(index){
+            $.post('/index.php', {c:'jchanneldata', a:'articlestatus', aid:aid,isblock:isblock}, function(res){
+                res = JSON.parse(res);
+                if(res.rs == 1){
+                    window.location.reload();
+                }else{
+                    layer.msg(res.msg, {time:2000});
+                }
+            });
+        }, function(){
+        });
+    });
+    $(".btn-success").click(function () {
+        var begintime = $("#begintime").val();
+        var endtime = $("#endtime").val();
+        if(begintime !='' && endtime !='' && endtime<begintime){
+            layer.msg("结束日期要大于等于开始日期", {time:2000});
+            return false;
+        }
+    });
+</script>

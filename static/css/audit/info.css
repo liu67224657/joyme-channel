@@ -1,0 +1,140 @@
+.info-main,.getcash-main,.tousu-main,.zhanghuanquan-main,.peisong-main,.xuyue-main,.change-kucun-main,.index-main,.new-main,.gonggao-main,.fhd-main,.kuaidi-main{padding: 20px;}
+
+.add-brand-main{padding: 20px;}
+
+.shop-info-main{padding: 20px;}
+
+.tixian-main{padding: 20px;}
+
+.table-wrap{width: 100%;margin-top: 20px;}
+
+table.shop-info-main tr td{text-align: left;vertical-align:middle;}
+.shop-info-main td{vertical-align: middle;text-align: left;}
+.shop-info-main th{text-align: left;}
+
+table.tixian-table tr td{text-align: left;vertical-align:middle;}
+.tixian-table td{vertical-align: middle;text-align: left;border: none;}
+.tixian-table th{text-align: left;}
+
+table.zhanghu tr td{text-align: left;vertical-align:middle;}
+.zhanghu td{vertical-align: middle;text-align: left;border: none;}
+.zhanghu th{text-align: left;}
+
+table.meibian tr td{text-align: left;vertical-align:middle;}
+.meibian td{vertical-align: middle;text-align: left;border: none;}
+.meibian th{text-align: left;}
+
+.xinxi-xiugai td{border: none;}
+
+.goods-list-main{padding: 20px;background-color: #FFFFFF;}
+/*.goods-list-search form{width: 900px;}*/
+.my-left{float: left;width: 440px;}
+.my-right{float: left;width: 460px;}
+
+.dingkuan{width:100px;}
+
+.index-title a{width: 100px;height: 100px;margin-bottom: 20px;margin-right: 10px;line-height: 100px;}
+
+.newsku-xing{color: #f00;}
+
+.dianji-baocun{margin-right: 10px;}
+
+.pingfen1{background-position: -5px -5px;}
+.pingfen2{background-position: -30px -5px;}
+.pingfen3{background-position: -55px -5px;}
+.pingfen4{background-position: -80px -5px;}
+.pingfen5{background-position: -105px -5px;}
+
+
+
+
+
+.payment-content-header-innner, .payment-content-header-innner2, .payment-content-header-innner3, .payment-content-header-innner4, .payment-content-header-innner5, .payment-content-header-innner6, .payment-content-header-innner7, .payment-content-header-innner8 {
+    width: 100%;
+    height: 40px;
+    margin-top: 40px;
+}
+.payment-content-header-innner {
+    background: url("http://p0.xingqizuhe.com/Res/Images/seller/payment/jindu1.png") no-repeat;
+}
+.payment-content-header-innner ul li, .payment-content-header-innner2 ul li, .payment-content-header-innner3 ul li, .payment-content-header-innner6 ul li, .payment-content-header-innner7 ul li,.payment-content-header-innner8 ul li {
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    text-align: center;
+    position: relative;
+    left: -45px;
+}
+.payment-content-header-innner-spe {
+    color: #FFFFFF;
+    font-weight: bolder;
+}
+.payment-content-header-innner-first {
+    width: 220px;
+    font-size: 14px;
+    color: #cdcecd;
+}
+.payment-content-header-innner-notfirst {
+    width: 185px;
+    font-size: 14px;
+    color: #cdcecd;
+}
+
+.payment-content-header-innner{background: url("http://p0.xingqizuhe.com/Res/Images/seller/payment/jindu1.png") no-repeat;}
+.payment-content-header-innner2{background: url("http://p0.xingqizuhe.com/Res/Images/seller/payment/jindu2.png") no-repeat;}
+.payment-content-header-innner3{background: url("http://p0.xingqizuhe.com/Res/Images/seller/payment/jindu3.png") no-repeat;}
+.payment-content-header-innner4{background: url("http://p0.xingqizuhe.com/Res/Images/seller/payment/jindu4.png") no-repeat;}
+.payment-content-header-innner5{background: url("http://p0.xingqizuhe.com/Res/Images/seller/payment/jindu5.png") no-repeat;}
+.payment-content-header-innner6{background: url("http://p0.xingqizuhe.com/Res/Images/seller/payment/jindu6.png") no-repeat;}
+.payment-content-header-innner7{background: url("http://p0.xingqizuhe.com/Res/Images/seller/payment/jindu7.png") no-repeat;}
+.payment-content-header-innner8{background: url("http://p0.xingqizuhe.com/Res/Images/seller/payment/jindu8.png") no-repeat;}
+
+
+
+#myModalLabel{font-family: '微软雅黑';}
+
+.thickdiv {position: fixed;top: 0;left: 0;z-index: 10000001;width: 100%;height: 100%;background: #000;border: 0;filter: alpha(opacity = 15);opacity: .15; display:none;}
+.cancelbtns{ cursor:pointer;}
+.thickboxv{position: absolute;z-index: 10000002;overflow: hidden;padding: 0;border: 1px solid #faa25c;border-radius: 3px;
+-moz-border-radius: 3px;-webkit-border-radius: 3px; font-size:12px; display:none; height:260px;width: 440px;}
+
+
+
+
+
+
+
+
+
+
+table.mytb th,table.mytb td{ font-weight:lighter; padding:6px 0px;}
+table.mytb tr th{ text-align:right}
+table.mytb tr td{ text-align:left}
+span.hide{ display:none}
+
+.searchtb span{ float:none}
+
+
+/*宗明珠20141107合同签订*/
+.contract{width: 990px;margin: auto;font-family:"微软雅黑"; font-size:12px;}
+.contract p{ margin:0px;}
+.contract_1{width: 990px;background: #f5f5f5;border: 1px solid #999999;padding-bottom: 20px;}
+.contract_1 h3{text-align: center; font-size: 22px; font-weight: bold;}
+.contract_1 p {color: #4d4c4c;line-height: 24px;margin-left: 106px;}
+.contract_1 input{border: 1px solid #000;padding: 1px;width: 180px;}
+.contract_2 {width: 950px;background: #f5f5f5;border: 1px solid #999999;padding-left: 20px;margin-top: 20px;padding-right: 20px;height: 400px;overflow-y: scroll;padding-bottom: 20px;}
+.contract_2 h2 {margin-left: 400px;margin-top: 20px;font-size: 16px;font-weight: 600;margin-bottom: 10px;}
+.contract_2 p {line-height: 20px;}
+.contract_2 h3{font-weight: 600;font-size: 14px;}
+.contract_3 {margin-top: 30px;margin-left: 100px;}
+.contract_3 input{ margin:0px;}
+table tr td{ text-align:left; padding:0 5px;}
+.contract_1_3a {margin-bottom: 20px;margin-top: 10px; margin-left:100px;}
+
+
+
+
+
+
+

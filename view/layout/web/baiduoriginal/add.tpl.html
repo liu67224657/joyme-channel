@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>提交原创</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <!--<link rel="stylesheet" type="text/css" href="/static/css/common/jquery.datetimepicker.css">-->
+    <script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+    <script src="http://static.joyme.com/pc/wiki/tuji/js/layer.js"></script>
+    <script src="/static/script/common/validate/jquery.validate.js"></script>
+    <script src="/static/script/common/validate/jquery.form.js"></script>
+    <style>
+        #jchannelform:not(select) .error{color:red;}
+        #jchannelform  select.error {color:black;}
+    </style>
+</head>
+<body>
+<div class="goods-list-main">
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>提交原创</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=baiduoriginal&a=addPro" id="baiduoriginalform">
+                <div class="my-center">
+                    <div class="control-group">
+                        <label class="control-label" for="source">项目标示:</label>
+                        <select name="source" id="source">
+                            <option value="1">wiki</option>
+                            <option value="2">cms</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="title">文章标题:</label>
+                        <input type="text" name="title"  id="title">
+                        <span style="color:red" id="error_title"></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="url">文章url:</label>
+                        <input type="text" name="url"  id="url">
+                        <span style="color:red" id="error_url"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-success" id="submitBtn" value="提交">&nbsp;&nbsp;
+                        <a href="javascript:;"  class="btn btn-success" style="height: 20px;" id="fanhui">返回</a>
+                    </div>
+                </div>
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(function(){
+        $('#fanhui').click(function(){
+            layer.confirm('确认返回么?', function(index){
+//                location.href = 'http://'+window.location.host+'?c=baiduoriginal&a=index';
+                location.href = '?c=baiduoriginal&a=index';
+                layer.close(index);
+            });
+        });
+
+        $("#baiduoriginalform").validate({
+            rules: {
+                title: {
+                    required: true
+                },
+                url:{
+                    required: true
+                }
+            },
+            messages:{
+                title: {
+                    required: "文章标题不能为空"
+                },
+                url:{
+                    required: "文章url不能为空"
+                }
+            },
+            submitHandler:function(form){
+                form.submit();
+            }
+        });
+    });
+</script>

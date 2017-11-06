@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>数字站</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <script src="<?=$data['static_url']?>/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+<ul class="breadcrumb">
+    <li>首页<span class="divider">/</span></li>
+    <li>数字站管理<span class="divider">/</span></li>
+    <li class="active">WIKI列表</li>
+</ul>
+<div class="content-box">
+    <div class="content-box-header">
+        <h5>查询条件</h5>
+    </div>
+    <div class="goods-list-search content-box-content">
+        <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=joymewiki&a=index">
+            <div class="my-left">
+                <div class="control-group">
+                    <label class="control-label">所属WIKI:</label>
+                    <select name="wiki_name" id="wiki_name">
+                        <?php foreach($data['wiki_name'] as $key=>$v):?>
+                        <option value="<?=$v['joyme_wiki_key']?>" <?php if($data['param']==$v['joyme_wiki_key']){echo "selected='selected'";}?>><?=$v['joyme_wiki_key']?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+            </div>
+            <div class="my-right">
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-success" value="查询">&nbsp;&nbsp;
+                        <a href="?c=joymewiki&a=index"  class="btn btn-success" style="height: 20px;">重置</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+    <div class="content-box">
+    <div class="content-box-header">
+        <h5>WIKI列表</h5>
+    </div>
+    <div class="content-box-content" style="">
+        <table class="table table-bordered table-hover" style="width: 100%;">
+            <thead>
+            <tr>
+                <th style="display: none;"></th>
+                <th>ID</th>
+                <th>wiki_key</th>
+                <th>wiki类型</th>
+                <th>wiki_domain</th>
+                <th>wiki名称</th>
+                <th>二级域名</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(empty($data['item'])):?>
+            <tr class="warning">
+                <td colspan="7">暂无数据</td>
+            </tr>
+            <?php else:?>
+            <?php foreach($data['item'] as $key=>$v):?>
+            <tr>
+                <td><?=$v['joyme_wiki_id'];?></td>
+                <td><?=$v['joyme_wiki_key']?></td>
+                <td><?=$v['context_path']?></td>
+                <td><?=$v['joyme_wiki_domain']?></td>
+                <td><?=$v['joyme_wiki_name']?></td>
+                <td>
+                    <?php if($v['support_subdomain']==0):?>
+                        不支持
+                    <?php else:?>
+                        支持
+                    <?php endif;?>
+                </td>
+                <td>
+                    <a href="?c=joymewiki&a=showEditPage&wiki_id=<?=$v['joyme_wiki_id']?>"  class="btn btn-success" style="height: 20px;">编辑</a>
+                </td>
+            </tr>
+            <?php endforeach;?>
+            <?php endif;?>
+            </tbody>
+        </table>
+        <div class="pagination pagination-right">
+            <ul>
+                <?=$data['page_str']?>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
+<script>
+    $(".active a").css('background-color','#5bb75b');
+    $(".active a").css('color','black');
+    $(".admin_page a").css('cursor','pointer');
+</script>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>编辑标签</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common/jquery.datetimepicker.css">
+    <script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/plupload.full.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/qiniu.js"></script>
+    <script src="http://static.joyme.com/pc/wiki/tuji/js/layer.js"></script>
+    <script src="/static/script/common/validate/jquery.validate.js"></script>
+    <script src="/static/script/common/validate/jquery.form.js"></script>
+    <script src="/static/script/common/jquery.datetimepicker.full.js"></script>
+    <script src="/static/script/baiduhezuo.js"></script>
+    <style>
+        #jgameform:not(select) .error{color:red;}
+        #jgameform  select.error {color:black;}
+    </style>
+</head>
+<body>
+<div class="goods-list-main">
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>编辑标签</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=jgame&a=editPro" id="jgameform">
+                <input type="hidden" name="gid" id="gid" value="<?php echo $gid;?>">
+                <input type="hidden" name="labelname" id="labelname" value="<?php echo $labelname;?>">
+                <input type="hidden" name="datatype" id="datatype" value="<?php echo $datatype;?>">
+                <div class="my-center">
+                    <?php if($datatype==1):?>
+                        <div class="control-group">
+                        <label class="control-label" for="datatype">标签类型：</label>
+                        <span style="display: inline-block;line-height: 30px;">游戏标签</span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">游戏名称（游戏库）：</label>
+                            <span style="display: inline-block;line-height: 30px;"><?php echo $gamename;?></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">渠道：</label>
+                        <span style="display: inline-block;line-height: 30px;">
+                        <?php foreach($jchannellists as $key=>$val):?>
+                        <input class="channelcid" id="<?php echo $val['ckey'];?>" type="checkbox" name="cids[]" value="<?php echo $val['cid'];?>"  data-ckey="<?php echo $val['ckey'];?>" data-cname="<?php echo $val['channel_name'];?>" <?php echo $val['checked'];?>><?php echo $val['channel_name'];?>
+                            <?php endforeach;?>
+                        </span>
+                        </div>
+                        <div class="baiduglb-group" style="display: <?php echo $baiduglbgroup;?>;">
+                            <div class="control-group">
+                                <label class="control-label" for="baiduglbgamename">百度哥伦布渠道游戏名称:</label><input type="text" name="baiduglbgamename"  id="baiduglbgamename" value="<?php echo $baiduglbgamename;?>">
+                                <span style="color:red" id="error_baiduglbgamename"></span>
+                            </div>
+                        </div>
+                        <div class="sougouwap-group" style="display: <?php echo $sougouwapgroup;?>;">
+                            <div class="control-group">
+                                <label class="control-label" for="sougouwapgamename">搜狗wap渠道游戏名称:</label>
+                                <input type="text" name="sougouwapgamename"  id="sougouwapgamename" value="<?php echo $sougouwapgamename;?>">
+                                <span style="color:red" id="error_sougouwapgamename'"></span>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="rank">手游排行:</label>
+                                <input type="text" name="rank"  id="rank" value="<?php echo $jgamelist['rank'];?>">
+                                <span style="color:red" id="error_rank"></span>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="rankurl">手游排行链接:</label>
+                                <input type="text" name="rankurl"  id="rankurl" value="<?php echo $jgamelist['rankurl'];?>">
+                                <span style="color:red" id="error_rankurl"></span>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="follow">人气:</label>
+                                <input type="text" name="follow"  id="follow" value="<?php echo $jgamelist['follow'];?>">
+                                <span style="color:red" id="error_follow"></span>
+                            </div>
+                            <div class="control-group">
+                                <div style="float:left;">
+                                    <label class="control-label" for="litpic">缩略图地址:</label>
+                                    <input type="text" name="litpic"  id="litpic"  value="<?php echo $jgamelist['litpic'];?>">
+                                    <i id="litpicfile" style="background-color:#E8E8E8;width: 80px;height: 34px;display: inline-block; cursor: pointer; text-align: center;line-height: 34px;border-radius: 4px;">上传图片</i>
+                                    <span style="color:red" id="error_litpic"></span>
+                                </div>
+                                <div style="width:120px;height:80px;float:left;">
+                                    <img id="litpicview" src="<?php echo $jgamelist['litpic'];?>" style="width:120px;height:80px;" title="120"><span style="cursor:pointer;" id="delImg">删除</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="gametypeurl">游戏类型数据库标签地址:</label>
+                                <input type="text" name="gametypeurl"  id="gametypeurl"  value="<?php echo $jgamelist['gametypeurl'];?>">
+                                <span style="color:red" id="error_gametypeurl"></span>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="listgifturl">礼包列表地址:</label>
+                                <input type="text" name="listgifturl"  id="listgifturl"  value="<?php echo $jgamelist['listgifturl'];?>">
+                                <span style="color:red" id="error_listgifturl"></span>
+                            </div>
+                        </div>
+                        <div class="sougoupc-group" style="display: <?php echo $sougoupcgroup;?>;">
+                            <div class="control-group">
+                                <label class="control-label" for="sougoupcgamename">搜狗PC游戏名称:</label>
+                                <input type="text" name="sougoupcgamename"  id="sougoupcgamename" value="<?php echo $sougoupcgamename;?>">
+                                <span style="color:red" id="error_sougoupcgamename'"></span>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">游戏类型:</label>
+                                <input type="radio" name="sougoupcgametype" value="ONLINEGAME" <?php if($gtypechecked=="ONLINEGAME"){echo 'checked="checked"'; }?>>ONLINE GAME
+                                <input type="radio" name="sougoupcgametype" value="PCGAME"  <?php if($gtypechecked=="PCGAME"){echo 'checked="checked"'; }?>>PC GAME
+                            </div>
+                        </div>
+                        <div class="sgcom-group" style="display: <?php echo $sgcomgroup;?>;">
+                            <div class="control-group">
+                                <label class="control-label" for="listnewsurl">资讯列表地址:</label>
+                                <input type="text" name="listnewsurl"  id="listnewsurl"  value="<?php echo $jgamelist['listnewsurl'];?>">
+                                <span style="color:red" id="error_listnewsurl"></span>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="liststrategyurl">攻略列表地址:</label>
+                                <input type="text" name="liststrategyurl"  id="liststrategyurl"  value="<?php echo $jgamelist['liststrategyurl'];?>">
+                                <span style="color:red" id="error_liststrategyurl"></span>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="listvideourl">视频列表地址:</label>
+                                <input type="text" name="listvideourl"  id="listvideourl"  value="<?php echo $jgamelist['listvideourl'];?>">
+                                <span style="color:red" id="error_listvideourl"></span>
+                            </div>
+                        </div>
+                    <?php else:?>
+                <div class="control-group">
+                    <label class="control-label" for="datatype">标签类型：</label>
+                    <span style="display: inline-block;line-height: 30px;">栏目标签</span>
+                </div>
+                    <div class="control-group">
+                        <label class="control-label">栏目编号：</label>
+                        <span style="width: 80px;display: inline-block;line-height: 31px;"><?php echo $gid;?></span>
+                        <span><?php echo $labelname;?></span>
+                    </div>
+                <div class="control-group">
+                    <label class="control-label">渠道：</label>
+                        <span style="display: inline-block;line-height: 30px;">
+                        <?php foreach($jchannellists as $key=>$val):?>
+                        <input class="channelcid" id="<?php echo $val['ckey'];?>" type="checkbox" name="cids[]" value="<?php echo $val['cid'];?>"  data-ckey="<?php echo $val['ckey'];?>" data-cname="<?php echo $val['channel_name'];?>" <?php echo $val['checked'];?>><?php echo $val['channel_name'];?>
+                            <?php endforeach;?>
+                        </span>
+                </div>
+                <?php endif; ?>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="hidden" name="uptoken" id="uptoken" value="<?php echo $uptoken;?>">
+                            <input type="submit" class="btn btn-success" id="submitBtn" value="提交">&nbsp;&nbsp;
+                            <a href="javascript:;"  class="btn btn-success" style="height: 20px;" id="fanhui">返回</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(function(){
+        var imgChangeing = false;
+        $('#delImg').click(function(){
+            $('#litpicview').attr('src', '');
+            $('#litpic').val('');
+        });
+        $('#fanhui').click(function(){
+            layer.confirm('确认返回么?', function(index){
+                location.href = 'http://'+window.location.host+'?c=jgame&a=index';
+                layer.close(index);
+            });
+        });
+        $("#jgameform").validate({
+            rules: {
+            },
+            messages:{
+            },
+            submitHandler:function(form){
+                var flag = true;
+                $(".channelcid").each(function () {
+                    if($(this).is(':checked')){
+                        var ckey = $(this).data("ckey");
+                        var listnewsurl = $("#listnewsurl").val();
+                        var liststrategyurl = $("#liststrategyurl").val();
+                        var listvideourl = $("#listvideourl").val();
+                        if(ckey == "baiduglb"){
+                            var baiduglbgamename = $("#baiduglbgamename").val();
+                            if(baiduglbgamename==''){
+                                flag = false;
+                                layer.msg("百度哥伦布渠道游戏名称不能为空", {time:2000});
+                                return false;
+                            }
+                        }else if(ckey == "sougoupc"){
+                            var sougoupcgamename = $("#sougoupcgamename").val();
+                            if(sougoupcgamename==''){
+                                flag = false;
+                                layer.msg("搜狗PC游戏名称不能为空", {time:2000});
+                                return false;
+                            }
+                            if(listnewsurl==''){
+                                flag = false;
+                                layer.msg("资讯列表地址不能为空", {time:2000});
+                                return false;
+                            }
+                            if(liststrategyurl==''){
+                                flag = false;
+                                layer.msg("攻略列表地址不能为空", {time:2000});
+                                return false;
+                            }
+                            if(listvideourl==''){
+                                flag = false;
+                                layer.msg("视频列表地址不能为空", {time:2000});
+                                return false;
+                            }
+                        }else if(ckey == "sougouwap"){
+                            var sougouwapgamename = $("#sougouwapgamename").val();
+                            if(sougouwapgamename==''){
+                                flag = false;
+                                layer.msg("搜狗wap渠道游戏名称不能为空", {time:2000});
+                                return false;
+                            }
+                            var rank = $("#rank").val();
+                            if(rank==''){
+                                flag = false;
+                                layer.msg("手游排行不能为空", {time:2000});
+                                return false;
+                            }
+                            var rankurl = $("#rankurl").val();
+                            if(rankurl==''){
+                                flag = false;
+                                layer.msg("手游排行链接不能为空", {time:2000});
+                                return false;
+                            }
+                            var follow = $("#follow").val();
+                            if(follow==''){
+                                flag = false;
+                                layer.msg("人气不能为空", {time:2000});
+                                return false;
+                            }
+                            var litpic = $("#litpic").val();
+                            if(litpic==''){
+                                flag = false;
+                                layer.msg("缩略图地址不能为空", {time:2000});
+                                return false;
+                            }else {
+                                var img = document.getElementById('litpicview');
+                                var imgsize = getImgSize(img);
+                                var imgW = imgsize[0];
+                                var imgH = imgsize[1];console.log('w:', imgW, 'h:', imgH);
+                                if((imgW != 120 || imgH != 80)){
+                                    flag = false;
+                                    layer.msg("请按要求尺寸传图，宽120，高80", {time:2000});
+                                    return false;
+                                }
+                            }
+                            var gametypeurl = $("#gametypeurl").val();
+                            if(gametypeurl==''){
+                                flag = false;
+                                layer.msg("游戏类型数据库标签地址不能为空", {time:2000});
+                                return false;
+                            }
+                            var listgifturl = $("#listgifturl").val();
+                            if(listgifturl==''){
+                                flag = false;
+                                layer.msg("礼包列表地址不能为空", {time:2000});
+                                return false;
+                            }
+                            if(listnewsurl==''){
+                                flag = false;
+                                layer.msg("资讯列表地址不能为空", {time:2000});
+                                return false;
+                            }
+                            if(liststrategyurl==''){
+                                flag = false;
+                                layer.msg("攻略列表地址不能为空", {time:2000});
+                                return false;
+                            }
+                            if(listvideourl==''){
+                                flag = false;
+                                layer.msg("视频列表地址不能为空", {time:2000});
+                                return false;
+                            }
+                        }
+                    }
+                });
+                if(flag){
+                    form.submit();
+                }
+            }
+        });
+
+        var host = window.location.host;
+        var env = host.split('.').pop();
+        if(env == 'beta' || env == 'com' ){
+            var qiniudomain = 'http://joymepic.joyme.com/';
+        }else{
+            var qiniudomain = 'http://joymetest.qiniudn.com/';
+        }
+
+        var Qiniu = new QiniuJsSDK();
+        var uploader = Qiniu.uploader({
+            runtimes: 'html5,flash,html4',
+            browse_button: 'litpicfile',//pltp
+            uptoken:$('#uptoken').val(),
+            domain: qiniudomain,
+            //container:'szlistBtn',
+            max_file_size: '4mb',
+            flash_swf_url: '',
+            max_retries: 3,
+            dragdrop: false,
+            chunk_size: '4mb',
+            auto_start: true,
+            multi_selection:false,
+            filters: {
+                mime_types : [{ title : "Image files", extensions : "jpg,jpeg,gif,png" }]
+            },
+            init: {
+                'FilesAdded': function(up, files) {
+                    imgChangeing = true;
+                },
+                'BeforeUpload': function(up, file) {
+                    if(window.FileReader) {
+                        var fileData = file.getNative();
+                        //读取图片数据
+                        var reader = new FileReader();
+                        reader.readAsDataURL(fileData);
+                        reader.onload = function (e) {
+                            var data = e.target.result;
+                            //加载图片获取图片真实宽度和高度
+                            var image = new Image();
+                            image.src= data;
+                            image.onload=function(){
+                                var width = image.width;
+                                var height = image.height;
+                                if((width != 120 && height != 80)){
+                                    layer.msg("请按要求尺寸传图，宽120，高80", {time:2000});
+                                    up.stop();
+                                }
+                            };
+                        };
+                    }
+                },
+                'UploadProgress': function(up, file) {},
+                'FileUploaded': function(up, file, info) {
+                    var domain = up.getOption('domain');
+                    var res = JSON.parse(info);
+                    var sourceLink = domain + res.key+'';
+                    $('#litpicview').attr('src', sourceLink);
+                    $('#litpic').val(sourceLink);
+                    $('#litpic').next('span').hide();
+                    $('#litpic').removeClass('error');
+                    imgChangeing = false;
+                },
+                'Error': function(up, err, errTip) {console.log(err);
+                    if(err.status == 401){
+                        layer.msg('操作超时，请您刷新页面', {time:3000});
+                    }else{
+                        layer.msg(errTip, {time:3000});
+                    }
+                },
+                'UploadComplete': function() {},
+                'Key': function(up, file) {
+                    var myDate = new Date();
+                    var ext = file.type.substr(file.type.indexOf('/')+1);
+                    var key = 'joymewiki/'+myDate.getFullYear()+''+myDate.getMonth()+'/'+myDate.getDate()+''+myDate.getTime()+''+Math.round(Math.random()*1000)+'.'+ext;
+                    return key;
+                }
+            }
+        });
+
+        $(".channelcid").change(function() {
+            var ckey = $(this).data("ckey");
+            var cname = $(this).data("cname");
+            if(ckey == "baiduglb"){
+                if($(this).is(':checked')){
+                    $('.baiduglb-group').css("display","block");
+                }else {
+                    $('.baiduglb-group').css("display","none");
+                }
+            }else if(ckey == "sougoupc"){
+                if($(this).is(':checked')){
+                    $('.sougoupc-group').css("display","block");
+                    if(!$("#sougouwap").is(':checked')){
+                        $('.sgcom-group').css("display","block");
+                    }
+                }else {
+                    $('.sougoupc-group').css("display","none");
+                    if(!$("#sougouwap").is(':checked')){
+                        $('.sgcom-group').css("display","none");
+                    }
+                }
+            }else if(ckey == "sougouwap"){
+                if($(this).is(':checked')){
+                    $('.sougouwap-group').css("display","block");
+                    if(!$("#sougoupc").is(':checked')){
+                        $('.sgcom-group').css("display","block");
+                    }
+                }else {
+                    $('.sougouwap-group').css("display","none");
+                    if(!$("#sougoupc").is(':checked')){
+                        $('.sgcom-group').css("display","none");
+                    }
+                }
+            }
+        });
+    });
+</script>

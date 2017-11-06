@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>原创列表</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common/jquery.datetimepicker.css">
+    <script src="<?php echo C('staticurl');?>/js/jquery-1.9.1.min.js"></script>
+    <script src="<?php echo C('staticurl');?>/pc/wiki/tuji/js/layer.js"></script>
+    <script src="/static/script/common/jquery.datetimepicker.full.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+    <ul class="breadcrumb">
+        <li><a href="/index.php?c=baiduoriginal&a=add"><button type="button" class="btn btn-default">提交原创</button></a></li>
+    </ul>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>查询条件</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=baiduoriginal&a=index">
+                <div class="my-left">
+                    <div class="control-group">
+                        <label class="control-label" >文章来源:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <select name="source">
+                                <option value="0" <?php if($source==0){echo 'selected="selected"';}?>>全部</option>
+                                <option value="1" <?php if($source==1){echo 'selected="selected"';}?>>wiki</option>
+                                <option value="2" <?php if($source==2){echo 'selected="selected"';}?>>cms</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" >提交时间开始:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <input type="text" style="height: 16px;" name="begintime" id="begintime" value="<?php echo $begintime;?>" placeholder="请输入要查找的提交时间">
+                        </div>
+                    </div>
+                </div>
+                <div class="my-right">
+                    <div class="control-group">
+                        <label class="control-label" >文章标题:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <input type="text" style="height: 16px;" name="title" value="<?php echo $title;?>" placeholder="请输入要查找的文章标题">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" >提交时间结束:</label>
+                        <div class="controls" style="margin-left: 0px;">
+                            <input type="text" style="height: 16px;" name="endtime" id="endtime" value="<?php echo $endtime;?>" placeholder="请输入要查找的提交时间">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="submit" class="btn btn-success" value="查询">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>原创列表</h5>
+        </div>
+        <div class="content-box-content" style="">
+            <table class="table table-bordered table-hover" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>文章来源</th>
+                    <th>文章标题</th>
+                    <th>提交结果</th>
+                    <th>日期</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if(empty($list)):?>
+                <tr class="warning">
+                    <td colspan="5">暂无数据</td>
+                </tr>
+                <?php else:?>
+                <?php foreach($list as $key=>$val):?>
+                <tr>
+                    <td><?php echo $val['id'];?></td>
+                    <td><?php echo $val['source'];?></td>
+                    <td><a href="<?php echo $val['url'];?>" target="_blank"><?php echo $val['title'];?></a></td>
+                    <td><?php echo $val['result'];?></td>
+                    <td><?php echo $val['addtime'];?></td>
+                </tr>
+                <?php endforeach;?>
+                <?php endif;?>
+                </tbody>
+            </table>
+            <div class="pagination pagination-right">
+                <ul>
+                    <?php echo $phtml;?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(".active a").css('background-color','#5bb75b');
+    $(".active a").css('color','black');
+    $(".admin_page a").css('cursor','pointer');
+    $('#begintime').datetimepicker({
+        timepicker:false,
+        format:'Y-m-d'
+    });
+    $('#endtime').datetimepicker({
+        timepicker:false,
+        format:'Y-m-d'
+    });
+    $(".btn-success").click(function () {
+        var begintime = $("#begintime").val();
+        var endtime = $("#endtime").val();
+        if(begintime !='' && endtime !='' && endtime<begintime){
+            layer.msg("结束日期要大于等于开始日期", {time:2000});
+            return false;
+        }
+    });
+</script>
+

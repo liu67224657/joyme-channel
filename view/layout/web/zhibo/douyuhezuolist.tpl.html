@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>斗鱼合作</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <script src="<?php echo C('staticurl');?>/js/jquery-1.9.1.min.js"></script>
+    <script src="<?php echo C('staticurl');?>/pc/wiki/tuji/js/layer.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+<div class="content-box">
+    <div class="content-box-header">
+        <h5>查询条件</h5>
+    </div>
+    <div class="goods-list-search content-box-content">
+        <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=douyuhezuo&a=index">
+            <div class="my-left">
+                <div class="control-group">
+                    <label class="control-label" >WIKIKEY:</label>
+                    <div class="controls" style="margin-left: 0px;">
+                        <input type="text" style="height: 16px;" name="wikikey" value="<?php echo $wikikey;?>" placeholder="请输入要查找的wikikey">
+                    </div>
+                </div>
+            </div>
+            <div class="my-right">
+                <div class="control-group">
+                    <label class="control-label" >主播名称:</label>
+                    <div class="controls" style="margin-left: 0px;">
+                        <input type="text" style="height: 16px;" name="nickname" value="<?php echo $nickname;?>" placeholder="请输入要查找的主播名称">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-success" value="查询">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+    <div class="content-box">
+    <div class="content-box-header">
+        <h5>主播列表  <a href="?c=douyuhezuo&a=add">添加主播</a></h5>
+    </div>
+    <div class="content-box-content" style="">
+        <table class="table table-bordered table-hover" style="width: 100%;">
+            <thead>
+            <tr>
+                <th>wikikey</th>
+                <th>ID</th>
+                <th>房间号</th>
+                <th>主播名称</th>
+                <th>QQ号</th>
+                <th>手机号</th>
+                <th>主播描述</th>
+                <th>直播状态</th>
+                <th>审核状态</th>
+                <th>锁定状态</th>
+                <th>权重</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(empty($list)):?>
+            <tr class="warning">
+                <td colspan="12">暂无数据</td>
+            </tr>
+            <?php else:?>
+            <?php foreach($list as $key=>$val):?>
+            <tr>
+                <td><?php echo $val['wikikey'];?></td>
+                <td><?php echo $val['userid'];?></td>
+                <td><?php echo $val['roomid'];?></td>
+                <td><?php echo $val['nickname'];?></td>
+                <td><?php echo $val['qq'];?></td>
+                <td><?php echo $val['cellphone'];?></td>
+                <td><?php echo $val['userdesc'];?></td>
+                <?php if($val['roomstatus'] == 1):?>
+                <td>直播中</td>
+                <?php elseif($val['roomstatus'] == 2):?>
+                <td>离线</td>
+                <?php else:?>
+                <td><?php echo $val['roomstatus'];?></td>
+                <?php endif;?>
+                <td>
+                    <select name="userstatus" data-id="<?php echo $val['id'];?>" style="width:82px;">
+                        <option value="1" <?php if($val['userstatus']==1){echo 'selected';}?> >审核通过</option>
+                        <option value="0" <?php if($val['userstatus']==0){echo 'selected';}?> >待审核</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="islock" data-id="<?php echo $val['id'];?>" style="width:82px;">
+                        <option value="1" <?php if($val['islock']==1){echo 'selected';}?> >锁定</option>
+                        <option value="0" <?php if($val['islock']==0){echo 'selected';}?> >开放</option>
+                    </select>
+                </td>
+                <td><input type="text" data-oldval="<?php echo $val['rank'];?>" data-id="<?php echo $val['id'];?>" name="rank" value="<?php echo $val['rank'];?>" style="width: 50px;"></td>
+                <td>
+                    <a href="?c=douyuhezuo&a=edit&id=<?php echo $val['id']?>&pno=<?php echo $pno;?>">编辑</a><br>
+                    <a href="javascript:;" class="del" data-id="<?php echo $val['id']?>">删除</a>
+                </td>
+            </tr>
+            <?php endforeach;?>
+            <?php endif;?>
+            </tbody>
+        </table>
+        <div class="pagination pagination-right">
+            <ul>
+                <?php echo $phtml;?>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
+<script>
+    $(".active a").css('background-color','#5bb75b');
+    $(".active a").css('color','black');
+    $(".admin_page a").css('cursor','pointer');
+    // 读取直播状态
+    function viewLiveStatus(){
+        //$('.livestatus').each(function(){
+            //var roomid = $(this).data('roomid');
+            $.ajax({
+                url:'http://open.douyucdn.cn/api/RoomApi/room/14163',
+                success:function( data ){
+                    console.log( data );
+                }
+            });
+        //});
+    }
+    
+    // 删除
+    $(".del").click(function(){
+        var _that = this;
+        var id = $(this).data('id');
+        layer.confirm('确定要删除么？', {
+            btn: ['确定','取消'] //按钮
+        }, function(index){
+            $.post('/index.php', {c:'douyuhezuo', a:'del', id:id}, function(res){
+               res = JSON.parse(res);
+               if(res.rs == 1){
+                   layer.msg(res.msg, {time:2000});
+                   $(_that).parents('tr').remove();
+               }else{
+                   layer.msg(res.msg, {time:2000});
+               }
+            });
+        }, function(){
+            
+        });
+    });
+    
+    // 权重修改
+    $(":input[name='rank']").blur(function(){
+        var id = $(this).data('id');
+        var newval = $(this).val();
+        var oldval = $(this).data('oldval');
+        if(newval == oldval){
+            return false;
+        }
+        var data = {id:id, rank:newval};
+        postEditData(data);
+    });
+    // 审核状态修改
+    $(":input[name='userstatus']").change(function(){
+        var id = $(this).data('id');
+        var userstatus = $(this).val();
+        var data = {id:id, userstatus:userstatus};
+        postEditData(data);
+    });
+    // 锁定状态
+    $(":input[name='islock']").change(function(){
+        var id = $(this).data('id');
+        var islock = $(this).val();
+        var data = {id:id, islock:islock};
+        postEditData(data);
+    });
+    // 提交修改数据
+    function postEditData(data){
+        data.c = 'douyuhezuo';
+        data.a = 'updateMsg';
+        
+        $.post('/index.php', data, function(res){
+            res = JSON.parse(res);
+            if(res.rs == 1){
+                layer.msg(res.msg, {time:2000});
+            }else{
+                layer.msg(res.msg, {time:2000});
+            }
+         });
+    }
+</script>
+

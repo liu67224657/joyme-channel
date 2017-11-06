@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>数字站</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <script src="<?=$data['static_url']?>/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+    <ul class="breadcrumb">
+        <li>首页<span class="divider">/</span></li>
+        <li>数字站<span class="divider">/</span></li>
+        <li class="active">编辑wiki</li>
+    </ul>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>编辑wiki</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=joymewiki&a=updateWikiData" id="edit_wiki">
+                <div class="my-center">
+                    <input type="hidden" name="wiki_id" value="<?=$data['item']['joyme_wiki_id']?>">
+                    <div class="control-group">
+                        <label class="control-label">wiki key:</label>
+                        <input type="text" name="wiki_key" id="wiki_key" value="<?=$data['item']['joyme_wiki_key']?>">
+                        <span id="error_wiki_key" style="color:red"></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">wiki 类型:</label>
+                        <input type="text" name="wiki_type" id="wiki_type" value="<?=$data['item']['context_path']?>">
+                        <span id="error_wiki_type" style="color:red"></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">wiki domain</label>
+                        <input type="text" name="wiki_domain" id="wiki_domain" value="<?=$data['item']['joyme_wiki_domain']?>">
+                        <span id="error_wiki_domain" style="color:red"></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">wiki名称</label>
+                        <input type="text" name="wiki_name" id="wiki_name" value="<?=$data['item']['joyme_wiki_name']?>">
+                        <span id="error_wiki_name" style="color:red"></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">二级域名</label>
+                        <select name="supportSubDomain">
+                            <option value="0" <?php if($data['item']['support_subdomain']==0){echo "selected='selected'";}?>>否</option>
+                            <option value="1" <?php if($data['item']['support_subdomain']==1){echo "selected='selected'";}?>>是</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">pc是否保留JSCSS</label>
+                        <select name="pcKeepJscss">
+                            <option value="0" <?php if($data['item']['pc_keep_jscss']==1){echo "selected='selected'";}?>>不保留</option>
+                            <option value="1" <?php if($data['item']['pc_keep_jscss']==1){echo "selected='selected'";}?>>保留</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">m是否保留JSCSS</label>
+                        <select name="mKeepJscss">
+                            <option value="0" <?php if($data['item']['m_keep_jscss']==1){echo "selected='selected'";}?>>不保留</option>
+                            <option value="1" <?php if($data['item']['m_keep_jscss']==1){echo "selected='selected'";}?>>保留</option>
+                        </select>
+                    </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-success" value="提交">&nbsp;&nbsp;
+                        <a href="?c=joymewiki&a=index"  class="btn btn-success" style="height: 20px;">返回</a>
+                    </div>
+                </div>
+
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function() {
+        $('#edit_wiki').submit(function() {
+            var wiki_key = $('#wiki_key').val();
+            if (wiki_key.length == 0) {
+                $('#error_wiki_key').html('wiki_key不能为空');
+                return false;
+            }else{
+                $('#error_wiki_key').html('');
+            }
+            var wiki_type = $('#wiki_type').val();
+            if (wiki_type.length == 0) {
+                $('#error_wiki_type').html('wiki类型不能为空');
+                return false;
+            }else{
+                $('#error_wiki_type').html('');
+            }
+            var wiki_domain = $('#wiki_domain').val();
+            if (wiki_domain.length == 0) {
+                $('#error_wiki_domain').html('wiki domain不能为空');
+                return false;
+            }else{
+                $('#error_wiki_domain').html('');
+            }
+            var wiki_name = $('#wiki_name').val();
+            if (wiki_name.length == 0) {
+                $('#error_wiki_name').html('模板内容不能为空');
+                return false;
+            }else{
+                $('#error_wiki_name').html('');
+            }
+        });
+    })
+</script>

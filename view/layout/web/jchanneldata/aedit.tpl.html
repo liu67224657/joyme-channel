@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>文章编辑</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common/jquery.datetimepicker.css">
+    <script src="http://static.joyme.com/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/plupload.full.min.js"></script>
+    <script type="text/javascript" src="http://static.joyme.com/js/qiniu.js"></script>
+    <script src="http://static.joyme.com/pc/wiki/tuji/js/layer.js"></script>
+    <script src="/static/script/common/validate/jquery.validate.js"></script>
+    <script src="/static/script/common/validate/jquery.form.js"></script>
+    <script src="/static/script/common/jquery.datetimepicker.full.js"></script>
+    <script src="/static/script/baiduhezuo.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+    <div class="content-box">
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="/index.php?c=jchanneldata&a=aeditPro" id="aeditform">
+                <input type="hidden" name="aid" id="aid" value="<?php echo $aid;?>">
+                <div class="my-center">
+                    <div class="control-group">
+                        <label class="control-label">文章标题：</label>
+                        <span style="display: inline-block;line-height: 32px;"><?php echo $alist['title'];?></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">发布时间：</label>
+                        <span style="display: inline-block;line-height: 32px;"><?php echo date("Y-m-d H:i:s",$alist['pubdate']);?></span>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">内容类型：</label>
+                        <span style="display: inline-block;line-height: 32px;"><?php echo $atype_desc;?></span>
+                        <input type="hidden" name="atype" id="atype" value="<?php echo $atype;?>">
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="content-box-header">
+                        <h5>文章发布渠道：</h5>
+                    </div>
+                    <div class="content-box-content" style="">
+                        <table class="table table-bordered table-hover" style="width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>渠道名称</th>
+                                <th>状态</th>
+                                <th>图片</th>
+                                <th>替换图片</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if(empty($jchannellists)):?>
+                            <tr class="warning">
+                                <td colspan="4">暂无数据</td>
+                            </tr>
+                            <?php else:?>
+                            <?php foreach($jchannellists as $key=>$val):?>
+                            <tr>
+                                <td><?php echo $val['channel_name'];?></td>
+                                <td id="isblock_desc_<?php echo $val['cid'];?>"><?php echo $val['isblock_desc'];?></td>
+                                <td><img id="litpic_<?php echo $val['cid'];?>" src="<?php echo $val['litpic'];?>"><span style="margin-left: 10px;color: #FF0000"><?php echo $val['litpic_rule'];?></span></td>
+                                <td><?php echo $val['litpic_desc'];?></td>
+                                <td><?php echo $val['isblock_op'];?></td>
+                            </tr>
+                            <?php endforeach;?>
+                            <?php endif;?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="hidden" name="uptoken" id="uptoken" value="<?php echo $uptoken;?>">
+                        <a href="javascript:;"  class="btn btn-success" style="height: 20px;" id="fanhui">返回</a>
+                    </div>
+                </div>
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="begintime" id="begintime" value="<?php echo $begintime;?>">
+<input type="hidden" name="endtime" id="endtime" value="<?php echo $endtime;?>">
+<input type="hidden" name="pcid" id="pcid" value="<?php echo $pcid;?>">
+<input type="hidden" name="labeltype" id="labeltype" value="<?php echo $labeltype;?>">
+<input type="hidden" name="labelname" id="labelname" value="<?php echo $labelname;?>">
+<input type="hidden" name="arctitle" id="arctitle" value="<?php echo $arctitle;?>">
+<input type="hidden" name="patype" id="patype" value="<?php echo $patype;?>">
+</body>
+</html>
+<script>
+    $(function(){
+        $('#fanhui').click(function(){
+            layer.confirm('确认返回么?', function(index){
+                var listurl = 'http://'+window.location.host+'?c=jchanneldata&a=alist';
+                var begintime = $("#begintime").val();
+                if(begintime){
+                    listurl += "&begintime="+begintime;
+                }
+                var endtime = $("#endtime").val();
+                if(endtime){
+                    listurl += "&endtime="+endtime;
+                }
+                var pcid = $("#pcid").val();
+                if(pcid){
+                    listurl += "&pcid="+pcid;
+                }
+                var labeltype = $("#labeltype").val();
+                if(labeltype){
+                    listurl += "&labeltype="+labeltype;
+                }
+                var labelname = $("#labelname").val();
+                if(labelname){
+                    listurl += "&labelname="+labelname;
+                }
+                var arctitle = $("#arctitle").val();
+                if(arctitle){
+                    listurl += "&arctitle="+arctitle;
+                }
+                var patype = $("#patype").val();
+                if(patype){
+                    listurl += "&patype="+patype;
+                }
+                location.href = listurl;
+//                location.href = 'http://'+window.location.host+'?c=jchanneldata&a=alist';
+                layer.close(index);
+            });
+        });
+
+        // 修改状态
+        $(".status").click(function(){
+            var _that = this;
+            var cid = $(this).data('cid');
+            var isblock = $(this).data('isblock');
+            var aid = $("#aid").val();
+            layer.confirm('确定要修改么？', {
+                btn: ['确定','取消'] //按钮
+            }, function(index){
+                $.post('/index.php', {c:'jchanneldata', a:'aeditisblock', cid:cid,aid:aid,isblock:isblock}, function(res){
+                    res = JSON.parse(res);
+                    console.log(res);
+                    if(res.rs == 1){
+                        if(isblock==1){
+                            $(_that).data('isblock','0');
+                            $(_that).html("启用");
+                            $("#isblock_desc_"+cid).html("禁用");
+                        }else {
+                            $(_that).data('isblock','1');
+                            $(_that).html("禁用");
+                            $("#isblock_desc_"+cid).html("启用");
+                        }
+                        layer.close(index);
+                    }else{
+                        layer.msg(res.msg, {time:2000});
+                    }
+                });
+            }, function(){
+            });
+        });
+    });
+
+    $('.table-in-upload').each(function(){
+        uploadicon($(this).attr('id'),$(this).data("ckey"));
+    });
+    function uploadicon(id,ckey) {
+        var arr = id.split("_");
+        var cid = arr[1];
+        var aid = arr[2];
+        var Qiniu = new QiniuJsSDK();
+        var host = window.location.host;
+        var env = host.split('.').pop();
+        if (env == 'beta' || env == 'com') {
+            var qiniudomain = 'http://joymepic.joyme.com/';
+        } else {
+            var qiniudomain = 'http://joymetest.qiniudn.com/';
+        }
+        var atype = $("#atype").val();
+        var uploader = Qiniu.uploader({
+            runtimes: 'html5,flash,html4',
+            browse_button: id,//pltp
+            uptoken: $('#uptoken').val(),
+            domain: qiniudomain,
+            max_file_size: '4mb',
+            flash_swf_url: '',
+            max_retries: 3,
+            dragdrop: false,
+            chunk_size: '4mb',
+            auto_start: true,
+            multi_selection: false,
+            filters: {
+                mime_types: [{title: "Image files", extensions: "jpg,jpeg,png"}]
+            },
+            init: {
+                'FilesAdded': function (up, files) {
+                },
+                'BeforeUpload': function (up, file) {
+                    console.log(up);
+                    if(window.FileReader) {
+                        var fileData = file.getNative();
+                        //读取图片数据
+                        var reader = new FileReader();
+                        reader.readAsDataURL(fileData);
+                        reader.onload = function (e) {
+                            var data = e.target.result;
+                            //加载图片获取图片真实宽度和高度
+                            var image = new Image();
+                            image.src= data;
+                            image.onload=function(){
+                                var width = image.width;
+                                var height = image.height;
+                                console.log(width,height);
+                                if(ckey=="baiduglb"){
+                                    if(atype=="0"){
+                                        if((width < 120 || height < 120) || (width/height)!=1){
+                                            up.stop();
+                                            layer.msg("请按要求尺寸传图，尺寸要求：比例1:1，不低于120*120", {
+                                                time:0
+                                                ,btn: ['关闭']
+                                                ,yes:function () {
+                                                    window.location.reload();
+                                                }
+                                            });
+                                        }
+                                    }
+                                    else if(atype=="1"){
+                                        if((width < 180 || height < 135) || (width/height)!=(4/3)){
+                                            up.stop();
+                                            layer.msg("请按要求尺寸传图，尺寸要求：比例4:3，不低于180*135，建议200*150以上", {
+                                                time:0
+                                                ,btn: ['关闭']
+                                                ,yes:function () {
+                                                    window.location.reload();
+                                                }
+                                            });
+                                        }
+                                    }
+                                    else if(atype=="4"){
+                                        if((width < 120 || height < 120) || (width/height)!=1){
+                                            up.stop();
+                                            layer.msg("请按要求尺寸传图，尺寸要求：比例1:1，不低于120*120", {
+                                                time:0
+                                                ,btn: ['关闭']
+                                                ,yes:function () {
+                                                    window.location.reload();
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                                else if(ckey=="sougoupc"){
+                                    if((width != 202 || height != 152)){
+                                        up.stop();
+                                        layer.msg("请按要求尺寸传图，尺寸要求：202*152", {
+                                            time:0
+                                            ,btn: ['关闭']
+                                            ,yes:function () {
+                                                window.location.reload();
+                                            }
+                                        });
+                                    }
+                                }
+                                else if(ckey=="sougouwap"){
+                                    if((width != 120 || height != 90)){
+                                        up.stop();
+                                        layer.msg("请按要求尺寸传图，尺寸要求：120*90", {
+                                            time:0
+                                            ,btn: ['关闭']
+                                            ,yes:function () {
+                                                window.location.reload();
+                                            }
+                                        });
+                                    }
+                                }
+                                else if(ckey=="baidugl"){
+                                    if((width != 90 || height != 65)){
+                                        up.stop();
+                                        layer.msg("请按要求尺寸传图，尺寸要求：90*65", {
+                                            time:0
+                                            ,btn: ['关闭']
+                                            ,yes:function () {
+                                                window.location.reload();
+                                            }
+                                        });
+                                    }
+                                }
+                            };
+                        };
+                    }
+                },
+                'UploadProgress': function (up, file) {
+                },
+                'FileUploaded': function (up, file, info) {
+                    var domain = up.getOption('domain');
+                    var res = JSON.parse(info);
+                    var sourceLink = domain + res.key + '';
+                    $('#litpic_'+cid).attr('src', sourceLink);
+                    $.post('/index.php', {c:'jchanneldata', a:'aeditlitpic', aid:aid,cid:cid,litpic:sourceLink}, function(res){
+                        res = JSON.parse(res);
+                        console.log(res);
+                        layer.msg(res.msg, {time:2000});
+                    });
+                },
+                'Error': function (up, err, errTip) {
+                    console.log(err);
+                    if (err.status == 401) {
+                        layer.msg('操作超时，请您刷新页面', {time: 3000});
+                    }
+                    else if(err.code=='-601'){
+                        layer.msg("请上传jpg,png图片", {time: 3000});
+                    }
+                    else {
+                        layer.msg(errTip, {time: 3000});
+                    }
+                },
+                'UploadComplete': function () {
+                },
+                'Key': function (up, file) {
+                    var myDate = new Date();
+                    var ext = file.type.substr(file.type.indexOf('/') + 1);
+                    var key = 'joymewiki/' + myDate.getFullYear() + '' + myDate.getMonth() + '/' + myDate.getDate() + '' + myDate.getTime() + '' + Math.round(Math.random() * 1000) + '.' + ext;
+                    return key;
+                }
+            }
+        });
+    }
+</script>

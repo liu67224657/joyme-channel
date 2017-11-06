@@ -1,0 +1,65 @@
+<?php
+header("Content-type:text/xml");
+echo '<?xml version="1.0" encoding="utf-8" ?>';
+if($data['type']){
+?>
+<sddindex>
+    <?php for($i=1;$i<=$data['total'];$i++){ ?>
+    <sdd><!-- 数据 -->
+        <loc><![CDATA[ http://<?=$_SERVER['HTTP_HOST']?>/source/sougouclient?type=2&page=<?=$i?>]]></loc><!-- 子文件的 HTTP 链接 -->
+        <lastmod><?=date('Y-m-d',time())?></lastmod><!-- 更新日期 -->
+        <md5><?=md5(@file_get_contents("http://".$_SERVER['HTTP_HOST']."/source/sougouclient?type=2&page=".$i))?></md5><!-- 子文件的 MD5 -->
+    </sdd>
+    <?php } ?>
+</sddindex>
+<?php
+}else{
+?>
+<sdd>
+    <datalist>
+        <?php foreach($data as $val): ?>
+        <item><!-- 数据 -->
+            <uniq_id><![CDATA[<?=$val['id']?>]]></uniq_id>
+            <action><![CDATA[添加]]></action>
+            <item_type><![CDATA[<?=$val['media_type']?>]]></item_type>
+            <url><![CDATA[<?=$val['m_url']?>]]></url>
+            <title><![CDATA[<?=$val['title']?>]]></title><!-- 推荐、搜索和展示 -->
+            <subtitle><![CDATA[<?=$val['title']?>]]></subtitle><!-- 推荐、搜索和展示 -->
+            <?php if($val['description']){?>
+            <brief><![CDATA[<?=$val['description']?>]]></brief><!-- 推荐、搜索和展示 -->
+            <?php }?>
+            <?php if($val['keywords']){?>
+            <tags><![CDATA[<?=$val['keywords']?>]]></tags><!-- 搜索和推荐 -->
+            <?php }?>
+            <category><![CDATA[<?=$val['category']?>]]></category><!-- 支持最多三级分类，搜索和推荐 -->
+            <source><![CDATA[着迷网]]></source><!-- 展示和参与滤重 -->
+            <update_time><![CDATA[<?=date('Y-m-d H:i:s',$val['update_time'])?>]]></update_time>
+            <contents><![CDATA[<?=$val['body']?>]]></contents><!-- 新闻类必填 -->
+            <num_read><![CDATA[<?=$val['read_num']?>]]></num_read>
+            <?php if($val['media_type'] == '图集'){?>
+            <image_type><![CDATA[精选]]></image_type>
+            <images><!-- 图集新闻，推荐、搜索和展示 -->
+                <?php foreach($val['pic_list'] as $row): ?>
+                <image>
+                    <url><![CDATA[<?=$row['uri']?>]]></url>
+                    <?php if($row['text']){?>
+                    <brief><![CDATA[<?=$row['text']?>]]></brief>
+                    <?php }?>
+                    <width><![CDATA[<?=$row['width']?>]]></width>
+                    <height><![CDATA[<?=$row['height']?>]]></height>
+                </image>
+                <?php endforeach;?>
+            </images>
+            <?php } ?>
+            <thumbs><!-- 列表页缩略图，推荐、展示 -->
+                <thumb>
+                    <url><![CDATA[<?=$val['pic_default']['url']?>]]></url>
+                    <width><![CDATA[<?=$val['pic_default']['width']?>]]></width>
+                    <height><![CDATA[<?=$val['pic_default']['height']?>]]></height>
+                </thumb>
+            </thumbs>
+        </item>
+        <?php endforeach;?>
+    </datalist>
+</sdd>
+<?php } ?>

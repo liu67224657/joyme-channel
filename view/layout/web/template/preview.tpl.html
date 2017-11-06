@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>数字站</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <script src="<?=$data['static_url']?>/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+    <ul class="breadcrumb">
+        <li>首页<span class="divider">/</span></li>
+        <li>数字站<span class="divider">/</span></li>
+        <li class="active">模板内容</li>
+    </ul>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>查看模板内容</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+          <?=$data['item']['template_context']?>
+        </div>
+    </div>
+    <?php if(!$data['callback']):?>
+        <a href="?c=template&a=index"  class="btn btn-success" style="height: 20px;">返回列表</a>
+    <?php endif;?>
+</div>
+</body>
+</html>

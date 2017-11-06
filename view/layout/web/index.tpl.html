@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>着迷网-后台管理系统</title>
+    <!--CSS-->
+    <link rel="stylesheet" href="/static/css/style/style.css" type="text/css" media="screen" />
+    <!-- Colour Schemes
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" href="/static/css/style/ie.css" type="text/css" media="screen" />
+    <![endif]-->
+    <!--Javascripts-->
+    <!-- jQuery -->
+    <script type="text/javascript" src="/static/script/style/jquery-1.3.2.min.js"></script>
+    <!-- jQuery Configuration -->
+    <script type="text/javascript" src="/static/script/style/simpla.jquery.configuration.js"></script>
+    <!-- Facebox jQuery Plugin -->
+    <script type="text/javascript" src="/static/script/style/facebox.js"></script>
+    <!-- jQuery WYSIWYG Plugin -->
+    <script type="text/javascript" src="/static/script/style/jquery.wysiwyg.js"></script>
+    <!-- jQuery Datepicker Plugin -->
+    <!--<script type="text/javascript" src="/static/script/style/jquery.datePicker.js"></script>-->
+    <script type="text/javascript" src="/static/script/style/jquery.date.js"></script>
+    <!--[if IE]><script type="text/javascript" src="/static/script/style/jquery.bgiframe.js"></script><![endif]-->
+    <!-- Internet Explorer .png-fix -->
+    <!--[if IE 6]>
+    <script type="text/javascript" src="/static/script/style/DD_belatedPNG_0.0.7a.js"></script>
+    <script type="text/javascript">
+        DD_belatedPNG.fix('.png_bg, img, li');
+    </script>
+    <![endif]-->
+    <script type="text/javascript" src="/static/script/style/action.js"></script>
+    <link href="/static/image/favicon.ico" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <style>
+        #sidebar .vvslid{position: absolute;right: 5px;top: 5px;background: url("/static/image/style/leftslid.png") no-repeat 0px 0px;z-index: 55;text-indent: -9999px;width: 16px;height: 16px;overflow: hidden;cursor: pointer}
+    </style>
+</head>
+
+<body>
+<div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+
+    <div id="sidebar">
+        <div class="vvslid"></div>
+    <div id="sidebar-wrapper"> <!-- Sidebar with logo and menu -->
+
+    <h1 id="sidebar-title"><a href="#">SimpleAdmin</a></h1>
+
+    <!-- Logo (221px wide) -->
+    <a href="#"><img id="logo" src="/static/image/style/logo.png" alt="Simpla Admin logo" /></a>
+
+    <!-- Sidebar Profile links -->
+    <div id="profile-links">
+        您好: <a href="#" title="Edit your profile"><?php echo $username?></a><a href="#messages" rel="modal" title="3 Messages"></a><br />
+        <br />
+        <a href="#" title="View the Site">修改资料</a> | <a href="?c=default&a=logout" title="Sign Out">退出</a>
+    </div>
+    <ul id="main-nav">  <!-- Accordion Menu -->
+
+    </ul> <!-- End #main-nav -->
+</div></div> <!-- End #sidebar -->
+
+<div id="main-content"> <!-- Main Content Section with everything -->
+<div class="main-content-inner">
+
+<noscript> <!-- Show a notification if the user has disabled javascript -->
+    <div class="notification error png_bg">
+        <div>
+        </div>
+    </div>
+</noscript>
+</div>
+</div>
+
+</div>
+
+<script type="text/javascript">
+
+var Oconfigjson =[
+    {'id' :'0',
+        'homePage' :'001',
+        'menu' :[
+            { 'text':'首页',
+                'items' : [
+                    { 'id':'001',
+                        'text':'后台首页',
+                        'href':'?c=index&a=index'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        'id' :'1',
+        'homePage' :'101',
+        'menu' :[
+            {
+                'text':'直播合作',
+                'items' : [
+                    {
+                        'id':'501',
+                        'text':'斗鱼主播列表',
+                        'href':'?c=douyuhezuo&a=index'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "homePage": "201",
+        "menu": [
+            {
+                "text": "数字站管理",
+                "items": [
+                    {
+                        "id": "201",
+                        "text": "标签管理",
+                        "href": "?c=lable&a=index"
+                    },
+                    {
+                        "id": "202",
+                        "text": "模板管理",
+                        "href": "?c=template&a=index"
+                    },
+                    {
+                        "id": "203",
+                        "text": "wiki列表",
+                        "href": "?c=joymewiki&a=index"
+                    },
+                    {
+                        "id": "204",
+                        "text": "玩家反馈",
+                        "href": "?c=feedback&a=index"
+                    }
+
+                ]
+            }
+        ]
+    },
+    {
+        'id' :'3',
+        'homePage' :'301',
+        'menu' :[
+            {
+                'text':'渠道管理',
+                'items' : [
+                    {
+                        'id':'301',
+                        'text':'标签列表',
+                        'href':'?c=jgame&a=index'
+                    },
+                    {
+                        'id':'302',
+                        'text':'文章列表',
+                        'href':'?c=jchanneldata&a=alist'
+                    },
+                    {
+                        'id':'303',
+                        'text':'礼包列表',
+                        'href':'?c=jchanneldata&a=giftlist'
+                    },
+                    {
+                        'id':'304',
+                        'text':'渠道列表',
+                        'href':'?c=jchannel&a=index'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        'id' :'4',
+        'homePage' :'401',
+        'menu' :[
+            {
+                'text':'百度原创管理',
+                'items' : [
+                    {
+                        'id':'401',
+                        'text':'原创列表',
+                        'href':'?c=baiduoriginal&a=index'
+                    }
+                ]
+            }
+        ]
+    }
+]
+</script>
+</body>
+</html>
+<script>
+    var hash = window.location.hash;
+    if(hash=='#0/001' || !hash){
+        window.location.href='http://'+window.location.host+"/#0/001";
+    }
+</script>

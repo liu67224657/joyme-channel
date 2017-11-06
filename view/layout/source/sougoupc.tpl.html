@@ -1,0 +1,97 @@
+<?php
+header("Content-type:text/xml");
+echo '<?xml version="1.0" encoding="utf-8" ?>';
+?>
+<DOCUMENT>
+    <?php foreach($data as $val): ?>
+    <item>
+        <game><?=$val['gamename']?></game>
+        <gametype><?=$val['sougoupcgametype']?></gametype>
+        <url><?=$val['wikiUrl']?></url>
+        <tab content="strategy" current="1">
+            <?php foreach($val['articlelist'] as $row):?>
+            <?php if($row['atype'] == 4):?>
+            <form>
+                <title>
+                    <?=$row['title']?>
+                </title>
+                <link>
+                    <?=$row['url']?>
+                </link>
+                <rawcoverimage>
+                    <?=$row['litpic']?>
+                </rawcoverimage>
+                <abstract>
+                    <?=$row['description']?>
+                </abstract>
+                <keywords>
+                    <?=$row['keywords']?>
+                </keywords>
+                <time>
+                    <?php echo date('Y-m-d',$row['pubdate'])?>
+                </time>
+            </form>
+            <?php endif; ?>
+            <?php endforeach; ?>
+            <morelink linkurl="<?=$val['liststrategyurl']?>" linkcontent="查看更多攻略"/>
+        </tab>
+        <tab content="news" current="0">
+            <?php foreach($val['articlelist'] as $row):?>
+            <?php if($row['atype'] == 0):?>
+            <form>
+                <title>
+                    <?=$row['title']?>
+                </title>
+                <link>
+                <?=$row['url']?>
+                </link>
+                <rawcoverimage>
+                    <?=$row['litpic']?>
+                </rawcoverimage>
+                <abstract>
+                    <?=$row['description']?>
+                </abstract>
+                <keywords>
+                    <?=$row['keywords']?>
+                </keywords>
+                <time>
+                    <?php echo date('Y-m-d',$row['pubdate'])?>
+                </time>
+            </form>
+            <?php endif; ?>
+            <?php endforeach; ?>
+            <morelink linkurl="<?=$val['listnewsurl']?>" linkcontent="查看更多资讯"/>
+        </tab>
+        <tab content="video" current="0">
+            <?php foreach($val['articlelist'] as $row):?>
+            <?php if($row['atype'] == 1):?>
+            <form>
+                <title>
+                    <?=$row['title']?>
+                </title>
+                <link>
+                <?=$row['url']?>
+                </link>
+                <rawcoverimage>
+                    <?=$row['litpic']?>
+                </rawcoverimage>
+                <abstract>
+                    <?=$row['description']?>
+                </abstract>
+                <keywords>
+                    <?=$row['keywords']?>
+                </keywords>
+                <time>
+                    <?php echo date('Y-m-d',$row['pubdate'])?>
+                </time>
+                <duration>
+                    180
+                </duration>
+            </form>
+            <?php endif; ?>
+            <?php endforeach; ?>
+            <morelink linkurl="<?=$val['listvideourl']?>" linkcontent="查看更多视频"/>
+        </tab>
+    </item>
+    <?php endforeach;?>
+</DOCUMENT>

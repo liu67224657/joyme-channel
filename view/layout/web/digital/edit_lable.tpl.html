@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>数字站</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <script src="<?=$data['static_url']?>/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<div class="goods-list-main">
+    <ul class="breadcrumb">
+        <li>首页<span class="divider">/</span></li>
+        <li>数字站<span class="divider">/</span></li>
+        <li class="active">编辑标签</li>
+    </ul>
+    <div class="content-box">
+        <div class="content-box-header">
+            <h5>添加标签</h5>
+        </div>
+        <div class="goods-list-search content-box-content">
+            <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=lable&a=addLableData" id="edit_lable_form">
+                <div class="my-center">
+                    <div class="control-group">
+                        <label class="control-label">PC/手机:</label>
+                        <select name="is_pc" id="is_pc">
+                            <option value="wiki" <?php if($data['item']['context_path']=='wiki'){echo "selected='selected'";}?>>PC</option>
+                            <option value="mwiki"<?php if($data['item']['context_path']=='mwiki'){echo "selected='selected'";}?>>手机</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">所属WIKI:</label>
+                        <select name="wiki_name" id="wiki_name">
+                            <?php foreach($data['wiki_name'] as $key=>$v):?>
+                                <option value="<?=$v['joyme_wiki_key']?>" <?php if($data['item']['wiki']==$v['joyme_wiki_key']){echo "selected='selected'";}?>><?=$v['joyme_wiki_key']?></option>
+                            <?php endforeach;?>
+                            <input type="hidden" value="<?=$data['item']['joyme_item_id']?>" name="update_id">
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">所属渠道:</label>
+                        <select name="wiki_channel_name" id="wiki_channel_name">
+                            <?php foreach($data['channe_name'] as $key=>$v):?>
+                                <option value="<?=$v['channel_name']?>" <?php if($v['channel_name']==$data['item']['channel']){echo "selected='selected'";}?>><?=$v['channel_name']?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">首页/子页:</label>
+                        <select name="is_home" id="is_home">
+                            <option value="0" <?php if(0==$data['item']['is_index']){echo "selected='selected'";}?>>两者</option>
+                            <option value="1" <?php if(1==$data['item']['is_index']){echo "selected='selected'";}?>>首页</option>
+                            <option value="2" <?php if(2==$data['item']['is_index']){echo "selected='selected'";}?>>子页</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label"></label>
+                        <input type="radio" name="isDefaultKey" value="1" onclick="changeKey()" <?php if(in_array($data['item']['item_key'],array('advertise','headimage','left_1','left_2','left_3','right_1','right_2','right_3'))){echo "checked";}?>>默认KEY
+                        <input type="radio" name="isDefaultKey" value="0" onclick="changeKey()" <?php if(!in_array($data['item']['item_key'],array('advertise','headimage','left_1','left_2','left_3','right_1','right_2','right_3'))){echo "checked";}?>>自定义
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">默认的KEY:</label>
+                        <select name="defaultIndexKey" id="defaultIndexKey">
+                            <option value="headimage" <?php if('headimage'==$data['item']['is_index']){echo "selected='selected'";}?>>头图</option>
+                            <option value="advertise" <?php if('advertise'==$data['item']['is_index']){echo "selected='selected'";}?>>广告</option>
+                            <option value="left_1" <?php if('left_1'==$data['item']['is_index']){echo "selected='selected'";}?>>左侧栏1</option>
+                            <option value="left_2" <?php if('left_2'==$data['item']['is_index']){echo "selected='selected'";}?>>左侧栏2</option>
+                            <option value="left_3" <?php if('left_3'==$data['item']['is_index']){echo "selected='selected'";}?>>左侧栏3</option>
+                            <option value="right_1" <?php if('right_1'==$data['item']['is_index']){echo "selected='selected'";}?>>右侧栏1</option>
+                            <option value="right_2" <?php if('right_2'==$data['item']['is_index']){echo "selected='selected'";}?>>右侧栏2</option>
+                            <option value="right_3" <?php if('right_3'==$data['item']['is_index']){echo "selected='selected'";}?>>右侧栏3</option>
+                        </select>
+                        <div>
+                            头图-headimage &nbsp;广告-advertise &nbsp;左侧栏1-left_1 &nbsp;左侧栏2-left_2 &nbsp;左侧栏3-left_3 &nbsp;右侧栏1-right_1 &nbsp;右侧栏2-right_2 &nbsp;右侧栏3-right_3 &nbsp;
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">自定义KEY:</label>
+                        <?php if(in_array($data['item']['item_key'],array('advertise','headimage','left_1','left_2','left_3','right_1','right_2','right_3'))):?>
+                            <input type="text" style="height: 26px;" name="set_item_key" value="">
+                        <?php else:?>
+                            <input type="text" style="height: 26px;" name="set_item_key" value="<?=$data['item']['item_key']?>">
+                        <?php endif;?>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">key的描述</label>
+                        <input type="text" style="height: 26px;" name="describe_item_key" value="<?=$data['item']['item_description']?>">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">所属类型</label>
+                        <select name="itemType" id="itemType" onchange="changeDiv()">
+                            <option value="">===请选择====</option>
+                            <option value="image" <?php if('image'==$data['item']['item_type']){echo "selected='selected'";}?>>图片</option>
+                            <option value="textlink"<?php if('textlink'==$data['item']['item_type']){echo "selected='selected'";}?>>文字链</option>
+                            <option value="flash"<?php if('flash'==$data['item']['item_type']){echo "selected='selected'";}?>>flash</option>
+                            <option value="iframe"<?php if('iframe'==$data['item']['item_type']){echo "selected='selected'";}?>>iframe</option>
+                            <option value="HTML"<?php if('HTML'==$data['item']['item_type']){echo "selected='selected'";}?>>HTML代码</option>
+                        </select>
+                        <input type="hidden" id="tipItemType" value="<?=$data['item']['item_type']?>">
+                    </div>
+                    <!-- 图片层 -->
+                    <div id="imageDiv" style="display: none">
+                        <div class="control-group">
+                            <label class="control-label">图片地址(必填):</label>
+                            <input type="text" name="imageUrl" id="imageUrl" value="<?=json_decode($data['item']['item_properties'],true)['imageUrl']?>"/>
+                            <span id="error_imageUrl" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">图片外链:</label>
+                            <input type="text" name="imageLinkUrl" id="imageLinkUrl" value="<?=json_decode($data['item']['item_properties'],true)['imageLinkUrl']?>"/>
+                            <span id="error_imageLinkUrl" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">链接是否新页面打开:</label>
+                            <select name="imageIsBlank">
+                                <option value="0" <?php if(0==json_decode($data['item']['item_properties'],true)['imageIsBlank']){echo "selected='selected'";}?>>否</option>
+                                <option value="1" <?php if(1==json_decode($data['item']['item_properties'],true)['imageIsBlank']){echo "selected='selected'";}?>>是</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">图片alt信息:</label>
+                            <input type="text" name="imageAlt" value="<?=json_decode($data['item']['item_properties'],true)['imageAlt']?>"/>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">图片宽度(必填):</label>
+                            <input type="text" name="imageWidth" id="imageWidth" value="<?=json_decode($data['item']['item_properties'],true)['imageWidth']?>"/>
+                            <span id="error_imageWidth" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">图片高度(必填):</label>
+                            <input type="text" name="imageHeight" id="imageHeight" value="<?=json_decode($data['item']['item_properties'],true)['imageHeight']?>"/>
+                            <span id="error_imageHeight" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">id:</label>
+                            <input type="text" name="imageId" value="<?=json_decode($data['item']['item_properties'],true)['imageId']?>"/>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">class:</label>
+                            <input type="text" name="imageClass" value="<?=json_decode($data['item']['item_properties'],true)['imageClass']?>"/>
+                        </div>
+                    </div>
+                    <!-- 文字链层 -->
+                    <div id="textlinkDiv" style="display: none">
+                        <div class="control-group">
+                            <label class="control-label">文字链链接地址(必填):</label>
+                            <input type="text" name="texturl" id="texturl" value="<?=json_decode($data['item']['item_properties'],true)['texturl']?>"/>
+                            <span id="error_texturl" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">文本信息(必填):</label>
+                            <input type="text" name="textInfo" id="textInfo" value="<?=json_decode($data['item']['item_properties'],true)['textInfo']?>"/>
+                            <span id="error_textInfo" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">链接是否新页面打开:</label>
+                            <select name="textIsBlank">
+                                <option value="0" <?php if(0==json_decode($data['item']['item_properties'],true)['imageIsBlank']){echo "selected='selected'";}?>>否</option>
+                                <option value="1" <?php if(1==json_decode($data['item']['item_properties'],true)['imageIsBlank']){echo "selected='selected'";}?>>是</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">id:</label>
+                            <input type="text" name="textId" value="<?=json_decode($data['item']['item_properties'],true)['textId']?>"/>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">class:</label>
+                            <input type="text" name="textClass" value="<?=json_decode($data['item']['item_properties'],true)['textClass']?>"/>
+                        </div>
+                    </div>
+                    <!-- flash层 -->
+                    <div id="flashDiv" style="display: none">
+                        <div class="control-group">
+                            <label class="control-label">flash地址(必填):</label>
+                            <input type="text" name="flashUrl" id="flashUrl" value="<?=json_decode($data['item']['item_properties'],true)['flashUrl']?>"/> 例如：http://player.youku.com/player.php/Type/Folder/Fid/20034817/Ob/1/sid/XNjEwMzA4MzUy/v.swf
+                            <span id="error_flashUrl" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">flash宽度(必填):</label>
+                            <input type="text" name="flashWidth" id="flashWidth"  value="<?=json_decode($data['item']['item_properties'],true)['flashWidth']?>"/>
+                            <span id="error_flashWidth" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">flash高度(必填):</label>
+                            <input type="text" name="flashHeight" id="flashHeight" value="<?=json_decode($data['item']['item_properties'],true)['flashHeight']?>"/>
+                            <span id="error_flashHeight" style="color:red"></span>
+                        </div>
+                    </div>
+                    <!-- iframe层 -->
+                    <div id="iframeDiv" style="display: none">
+                        <div class="control-group">
+                            <label class="control-label">iframe地址(必填):</label>
+                            <input type="text" name="iframeUrl" id="iframeUrl" value="<?=json_decode($data['item']['item_properties'],true)['iframeUrl']?>"/>
+                            <span id="error_iframeUrl" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">iframe高度(必填):</label>
+                            <input type="text" name="iframeHeight" id="iframeHeight" value="<?=json_decode($data['item']['item_properties'],true)['iframeHeight']?>"/>
+                            <span id="error_iframeHeight" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">iframe宽度(必填):</label>
+                            <input type="text" name="iframeWidth" id="iframeWidth" value="<?=json_decode($data['item']['item_properties'],true)['iframeWidth']?>"/>
+                            <span id="error_iframeWidth" style="color:red"></span>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">id:</label>
+                            <input type="text" name="iframeId" value="<?=json_decode($data['item']['item_properties'],true)['iframeId']?>"/>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">class:</label>
+                            <input type="text" name="iframeClass" value="<?=json_decode($data['item']['item_properties'],true)['iframeClass']?>"/>
+                        </div>
+                    </div>
+                    <!-- HTML层 -->
+                    <div id="HTMLDiv" style="display: none">
+                        <div class="control-group">
+                            <label class="control-label">HTML:</label>
+                            <textarea name="htmlContext" id="htmlContext" cols="120" rows="40"><?=$data['item']['item_context']?></textarea>
+                            <span id="error_htmlContext" style="color:red"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-success" value="提交">&nbsp;&nbsp;
+                        <a href="?c=lable&a=index"  class="btn btn-success" style="height: 20px;">返回</a>
+                    </div>
+                </div>
+
+            </form>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function() {
+        $('#edit_lable_form').submit(function() {
+            //判断选择类型
+            var itemType = $('#itemType').val();
+            if(itemType.length == 0){
+                $('#error_itemType').html('请选择标签类型');
+                return false;
+            }else{
+                $('#error_itemType').html('');
+                if(itemType == 'image'){
+                    var imageUrl = $('#imageUrl').val();
+                    if(imageUrl.length == 0){
+                        $('#error_imageUrl').html('图片地址不能为空');
+                        return false;
+                    }else{
+                        $('#error_imageUrl').html('');
+                    }
+                    var imageLinkUrl = $('#imageLinkUrl').val();
+                    if(imageLinkUrl.length == 0){
+                        $('#error_imageLinkUrl').html('图片外链地址不能为空');
+                        return false;
+                    }else{
+                        $('#error_imageLinkUrl').html('');
+                    }
+                    var imageWidth = $('#imageWidth').val();
+                    if(imageWidth.length == 0){
+                        $('#error_imageWidth').html('图片宽度不能为空');
+                        return false;
+                    }else{
+                        $('#error_imageWidth').html('');
+                    }
+                    var imageHeight = $('#imageHeight').val();
+                    if(imageHeight.length == 0){
+                        $('#error_imageHeight').html('图片高度不能为空');
+                        return false;
+                    }else{
+                        $('#error_imageHeight').html('');
+                    }
+                }else if(itemType == 'textlink'){
+                    var texturl = $('#texturl').val();
+                    if(texturl.length == 0){
+                        $('#error_texturl').html('文本链接不能为空');
+                        return false;
+                    }else{
+                        $('#error_texturl').html('');
+                    }
+                    var textInfo = $('#textInfo').val();
+                    if(textInfo.length == 0){
+                        $('#error_textInfo').html('文本信息不能为空');
+                        return false;
+                    }else{
+                        $('#error_textInfo').html('');
+                    }
+                }else if(itemType == 'flash'){
+                    var flashUrl = $('#flashUrl').val();
+                    if(flashUrl.length == 0){
+                        $('#error_flashUrl').html('flash链接不能为空');
+                        return false;
+                    }else{
+                        $('#error_flashUrl').html('');
+                    }
+                    var flashWidth = $('#flashWidth').val();
+                    if(flashWidth.length == 0){
+                        $('#error_flashWidth').html('flash宽度不能为空');
+                        return false;
+                    }else{
+                        $('#error_flashWidth').html('');
+                    }
+                    var flashHeight = $('#flashHeight').val();
+                    if(flashHeight.length == 0){
+                        $('#error_flashHeight').html('flash高度不能为空');
+                        return false;
+                    }else{
+                        $('#error_flashHeight').html('');
+                    }
+                }else if(itemType == 'iframe'){
+                    var flashUrl = $('#iframeUrl').val();
+                    if(flashUrl.length == 0){
+                        $('#error_iframeUrl').html('iframe链接不能为空');
+                        return false;
+                    }else{
+                        $('#error_iframeUrl').html('');
+                    }
+                    var iframeHeight = $('#iframeHeight').val();
+                    if(iframeHeight.length == 0){
+                        $('#error_iframeHeight').html('iframe链接不能为空');
+                        return false;
+                    }else{
+                        $('#error_iframeHeight').html('');
+                    }
+                    var iframeWidth = $('#iframeWidth').val();
+                    if(iframeWidth.length == 0){
+                        $('#error_iframeWidth').html('iframe链接不能为空');
+                        return false;
+                    }else{
+                        $('#error_iframeWidth').html('');
+                    }
+                }else if(itemType == 'HTML'){
+                    var htmlContext = $('#htmlContext').val();
+                    if(htmlContext.length == 0){
+                        $('#error_htmlContext').html('文本内容不能为空');
+                        return false;
+                    }else{
+                        $('#error_htmlContext').html('');
+                    }
+                }
+            }
+        })
+
+        var itemType = $('#tipItemType').val();
+        if(itemType){
+            if(itemType == "image"){
+                var imageDiv = document.getElementById("imageDiv");
+                imageDiv.style.display = 'block';
+            }
+            if (itemType == "textlink") {
+                var imageDiv = document.getElementById("textlinkDiv");
+                imageDiv.style.display = 'block';
+            }
+            if (itemType == "flash") {
+                var imageDiv = document.getElementById("flashDiv");
+                imageDiv.style.display = 'block';
+            }
+            if (itemType == "iframe") {
+                var imageDiv = document.getElementById("iframeDiv");
+                imageDiv.style.display = 'block';
+            }
+            if (itemType == "HTML") {
+                var imageDiv = document.getElementById("HTMLDiv");
+                imageDiv.style.display = 'block';
+            }
+        }
+    })
+
+    function changeKey() {
+        var obj = document.getElementsByName("isDefaultKey");
+        var customIndexKey = document.getElementById("customIndexKey");
+        var defaultIndexKey = document.getElementById("defaultIndexKey");
+        for ( var i = 0; i < obj.length; i++) {
+            if (obj[i].checked == true) {
+                if (obj[i].value == 1) {
+                    defaultIndexKey.disabled = false;
+                    customIndexKey.disabled = true;
+                } else {
+                    defaultIndexKey.disabled = true;
+                    customIndexKey.disabled = false;
+                }
+            }
+        }
+    }
+
+    function changeDiv() {
+
+        var itemTypeValue = $("#itemType").val();
+        $('#imageDiv').hide();
+        $('#textlinkDiv').hide();
+        $('#flashDiv').hide();
+        $('#iframeDiv').hide();
+        $('#HTMLDiv').hide();
+        if(itemTypeValue == "image"){
+            var imageDiv = document.getElementById("imageDiv");
+            imageDiv.style.display = 'block';
+        }
+        if (itemTypeValue == "textlink") {
+            var imageDiv = document.getElementById("textlinkDiv");
+            imageDiv.style.display = 'block';
+        }
+        if (itemTypeValue == "flash") {
+            var imageDiv = document.getElementById("flashDiv");
+            imageDiv.style.display = 'block';
+        }
+        if (itemTypeValue == "iframe") {
+            var imageDiv = document.getElementById("iframeDiv");
+            imageDiv.style.display = 'block';
+        }
+        if (itemTypeValue == "HTML") {
+            var imageDiv = document.getElementById("HTMLDiv");
+            imageDiv.style.display = 'block';
+        }
+    }
+</script>

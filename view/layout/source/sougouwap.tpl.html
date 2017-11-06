@@ -1,0 +1,104 @@
+<?php
+header("Content-type:text/xml");
+echo '<?xml version="1.0" encoding="utf-8" ?>';
+?>
+<DOCUMENT>
+    <?php foreach($data as $val): ?>
+    <item>
+        <key><?=$val['gamename']?></key>
+        <display>
+            <game><?=$val['gamename']?></game>
+            <title><?=$val['gamename']?></title>
+            <url><?=$val['wikiUrl']?></url>
+            <image><?=$val['litpic']?></image>
+            <tab content="攻略" current="1">
+                <?php foreach($val['articlelist'] as $row):?>
+                <?php if($row['atype'] == 4):?>
+                <form>
+                    <name>
+                        <?=$row['title']?>
+                    </name>
+                    <link>
+                    <![CDATA[ <?=$row['url']?> ]]>
+                    </link>
+                    <time>
+                        <?php echo date('Y-m-d',$row['pubdate'])?>
+                    </time>
+                    <picture>
+                        <?=$row['litpic']?>
+                    </picture>
+                </form>
+                <?php endif; ?>
+                <?php endforeach; ?>
+                <morelink linkurl="<?=$val['liststrategyurl']?>" linkcontent="查看更多攻略"/>
+            </tab>
+            <tab content="资讯" current="0">
+                <?php foreach($val['articlelist'] as $row):?>
+                <?php if($row['atype'] == 0):?>
+                <form>
+                    <name>
+                        <?=$row['title']?>
+                    </name>
+                    <link>
+                    <![CDATA[ <?=$row['url']?> ]]>
+                    </link>
+                    <time>
+                        <?php echo date('Y-m-d',$row['pubdate'])?>
+                    </time>
+                    <picture>
+                        <?=$row['litpic']?>
+                    </picture>
+                </form>
+                <?php endif; ?>
+                <?php endforeach; ?>
+                <morelink linkurl="<?=$val['listnewsurl']?>" linkcontent="查看更多资讯"/>
+            </tab>
+            <tab content="视频" current="0">
+                <?php foreach($val['articlelist'] as $row):?>
+                <?php if($row['atype'] == 1):?>
+                <form>
+                    <name>
+                        <?=$row['title']?>
+                    </name>
+                    <link>
+                    <![CDATA[ <?=$row['url']?> ]]>
+                    </link>
+                    <time>
+                        <?php echo date('Y-m-d',$row['pubdate'])?>
+                    </time>
+                    <picture>
+                        <?=$row['litpic']?>
+                    </picture>
+                </form>
+                <?php endif; ?>
+                <?php endforeach; ?>
+                <morelink linkurl="<?=$val['listvideourl']?>" linkcontent="查看更多视频"/>
+            </tab>
+            <tab content="礼包" current="0">
+                <?php foreach($val['giftlist'] as $row):?>
+                <form>
+                    <name><?=$row['activitySubject']?></name>
+                    <state>领取</state>
+                    <link>http://www.joyme.com/gift/<?=$row['aid']?></link>
+                    <startime><?=date('Y-m-d',strtotime($row['startTime']))?></startime>
+                    <endtime><?=date('Y-m-d',strtotime($row['endTime']))?></endtime>
+                </form>
+                <?php endforeach; ?>
+                <morelink linkurl="http://www.joyme.com/gift" linkcontent="查看更多礼包"/>
+            </tab>
+        </display>
+        <showimg/>
+        <showname/>
+        <showurl/>
+        <rank><?=$val['rank']?></rank>
+        <rankurl><![CDATA[ <?=$val['rankurl']?> ]]></rankurl>
+        <guanwang><?=$val['officialWebsite']?></guanwang>
+        <gametype><?php $temp = '';foreach($val['categoryTypeSet'] as $v){$temp.=','.$v['value'];} echo substr($temp,1); ?></gametype>
+        <gametypeurl><![CDATA[ <?=$val['gametypeurl']?> ]]></gametypeurl>
+        <follow><?=$val['follow']?></follow>
+        <iosurl><![CDATA[ <?=$val['iosDownload']?> ]]></iosurl>
+        <andurl><![CDATA[ <?=$val['androidDownload']?> ]]></andurl>
+        <pcurlr><![CDATA[ <?=$val['pcDownload']?> ]]></pcurlr>
+    </item>
+    <?php endforeach;?>
+</DOCUMENT>

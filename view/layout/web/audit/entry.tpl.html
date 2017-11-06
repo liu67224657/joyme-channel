@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>审核管理</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/audit/info.css">
+    <script src="/static/script/jquery-1.8.3.min.js"></script>
+    <script language="JavaScript" type="text/JavaScript" src="/static/common/My97DatePicker/WdatePicker.js"></script>
+    <style>
+        .rev_title{width: 120px;display: block;word-wrap: break-word;margin:0 auto}
+        .rev_link{word-wrap: break-word;display: block;width: 150px;text-align: center;margin:0 auto}
+        .rev_time{width: 70px;display: block;word-wrap: break-word;text-align: center;margin:0 auto}
+    </style>
+</head>
+<body>
+<div class="goods-list-main">
+<ul class="breadcrumb">
+    <li>首页<span class="divider">/</span></li>
+    <li>审核管理<span class="divider">/</span></li>
+    <li class="active">内容审核</li>
+</ul>
+<div class="content-box">
+    <div class="content-box-header">
+        <h5>查询条件</h5>
+    </div>
+    <div class="goods-list-search content-box-content">
+        <form class="form-horizontal" style="margin-top: 10px;" method="post" action="?c=audit&a=index" name="123">
+            <div class="my-left">
+                <div class="control-group">
+                    <label class="control-label">页面标题</label>
+                    <div class="controls">
+                        <input type="text" style="height: 16px;" name="rev_title" value="<?php echo $data['map']['rev_title'];?>">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >词条类型<?php echo $page_name;?></label>
+                    <div class="controls">
+                        <select name="rev_type" id="rev_type">
+                            <option value="0"selected="selected" >--全部--</option>
+                            <option value="1" <?php if($data['map']['rev_type']!='1000' && $data['map']['rev_type']!=''){echo "selected='selected'";}?>>wiki页面</option>
+                            <option value="1000" <?php if($data['map']['rev_type']=='1000'){echo "selected='selected'";}?>>wiki帖子</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >审核状态</label>
+                    <div class="controls">
+                        <select name="rev_status" id="rev_status">
+                            <option value="1" <?php if($data['map']['rev_type'] =='1'){echo "selected='selected'";}?> >--全部--</option>
+                            <option value="N" <?php if($data['map']['rev_status']=='N'){echo "selected='selected'";}?>>未审核</option>
+                            <option value="Y" <?php if($data['map']['rev_status']=='Y'){echo "selected='selected'";}?>>已通过</option>
+                            <option value="D" <?php if($data['map']['rev_status']=='D'){echo "selected='selected'";}?>>未通过</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >显示条数</label>
+                    <div class="controls">
+                        <select name="num" id="num">
+                            <option value="50" <?php if($data['map']['num']=='50'){echo "selected='selected'";}?>>50</option>
+                            <option value="100" <?php if($data['map']['num']=='100'){echo "selected='selected'";}?>>100</option>
+                            <option value="150" <?php if($data['map']['num']=='150'){echo "selected='selected'";}?>>150</option>
+                            <option value="200" <?php if($data['map']['num']=='200'){echo "selected='selected'";}?>>200</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="my-right" >
+                <div class="control-group">
+                    <label class="control-label" >创建时间</label>
+                    <div class="controls">
+                        <input  id="d11" type="text" value="<?php echo $data['map']['start_time'];?>" style="width: 110px;height: 18px;" name="start_time" class="input-small" value="" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy-M-d H:mm:ss',maxDate:'#F{$dp.$D(\'d12\')}'});"  class="Wdate">
+                        至
+                        <input id="d12"  type="text" value="<?php echo $data['map']['end_time'];?>" style="width: 110px;height: 18px;" name="end_time" class="input-small" value="" onfocus="WdatePicker({skin:'default',dateFmt:'yyyy-M-d H:mm:ss',minDate:'#F{$dp.$D(\'d11\')}'});"  class="Wdate">
+                    </div>
+                </div>
+                <input type="hidden" name="list_type" value="2">
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" class="btn btn-success" value="查询">&nbsp;&nbsp;
+                        <a href="?c=audit&a=index"  class="btn btn-success" style="height: 20px;">重置</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+<div class="content-box">
+    <div class="content-box-header">
+        <h5>数据列表</h5>
+    </div>
+    <div class="content-box-content" style="">
+        <table class="table table-bordered table-hover" style="width: 100%;">
+            <thead>
+            <tr>
+                <div>
+                    <input type="checkbox" id="SelectAll"  value="全选" onclick="se(0)" >全选
+                    <input type="checkbox" name="uncheck" value="1" onclick="se(1)">反选
+                    状态改为：
+                    <select id="updatestate" class="default_select_single" style="width: 120px;">
+                        <option value="1" id="tongguo1">通过</option>
+                        <option value="2" id="tongguo2">删除</option>
+                    </select>
+                    <input class="update1" id="update1" type="button" value="批量操作">
+                </div>
+            </tr>
+            <tr>
+                <th>勾选</th>
+                <th style="display: none;"></th>
+                <th>ID</th>
+                <th>编辑者</th>
+                <th>标题</th>
+                <th>链接</th>
+                <th>页面类型</th>
+                <th>词条类型</th>
+                <th>操作</th>
+                <th>审核状态</th>
+                <th>创建时间</th>
+                <th>操作人</th>
+                <th>操作时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(count($data)==1):?>
+            <tr class="warning">
+                <td colspan="11">暂无数据</td>
+            </tr>
+            <?php else:?>
+            <?php foreach($data as $key=>$v):?>
+            <?php if(is_numeric($key)):?>
+            <tr>
+                <td>
+                    <?php if($v['rev_status']!='D'):?>
+                    <input type="checkbox" name="one" id="<?=$v['id'];?>" value="<?=$v['id'];?>">
+                    <?php endif;?>
+                </td>
+                <td style="display: none;"><input type="hidden" id="page" value="<?=$v['rev_page'];?>">
+                    <input type="hidden" id="rev_id" value="<?=$v['rev_id'];?>">
+                    <input type="hidden" id="text_id" value="<?=$v['rev_text_id'];?>">
+                    <input type="hidden" id="id" value="<?=$v['id'];?>">
+                    <input type="hidden" id="name" value="<?=$v['rev_belong'];?>">
+                    <input type="hidden" id="title" value="<?=$v['rev_title'];?>">
+                    <input type="hidden" id="stat" value="<?=$v['rev_status'];?>">
+                    <input type="hidden" id="shanchu" value="<?=$v['rev_status'];?>">
+                </td>
+
+                <td><?=$v['id'];?></td>
+                <td><?=$v['rev_user_text']?></td>
+                <td>
+                    <span class="rev_title"><?=$v['rev_title']?></span>
+                </td>
+                <td>
+                    <?php $domain = explode(".",$_SERVER['SERVER_NAME'])?>
+                    <a class="rev_link" target="_blank" href="http://<?php echo $v['rev_belong']?>.joyme.<?php echo $domain[2]?>/index.php?title=<?php echo $v['rev_title']?>&oldid=<?php echo $v['rev_id']?>">
+                        <?php echo $v['rev_belong']?>.joyme.<?php echo $domain[2]?>//index.php?title=<?php echo $v['rev_title']?>&oldid=<?php echo $v['rev_id']?>
+                    </a>
+                </td>
+                <td>
+                    <?php if($v['rev_is_new']==1):?>
+                    新建
+                    <?php else:?>
+                    修改
+                    <?php endif;?>
+                </td>
+                <td>
+                    <?php if($v['rev_page_namespace']!=1000):?>
+                    wiki页面
+                    <?php else:?>
+                    wiki帖子
+                    <?php endif;?>
+                </td>
+                <td style="width:60px;">
+                    <?php if($v['rev_status']=='N' || $v['rev_status']=='F'):?>
+                    <input type="button" value="通过" onclick="agree('<?php echo $v['id']?>','<?php echo $v['rev_belong']?>','<?php echo $v['rev_title']?>')">
+                    <input type="button" value="删除" onclick="del('<?php echo $v['id']?>','<?php echo $v['rev_belong']?>','<?php echo $v['rev_page']?>','<?php echo $v['rev_id']?>','<?php echo $v['rev_text_id']?>','<?php echo $v['rev_title']?>')">
+                    <?php elseif($v['rev_status']=='D'):?>
+                    <?php else:?>
+                    <input type="button" value="删除" onclick="del('<?php echo $v['id']?>','<?php echo $v['rev_belong']?>','<?php echo $v['rev_page']?>','<?php echo $v['rev_id']?>','<?php echo $v['rev_text_id']?>')">
+                    <?php endif;?>
+                </td>
+                <td>
+                    <?php if($v['rev_status']=='N'):?>
+                    未审核
+                    <?php elseif($v['rev_status']=='D'):?>
+                    未通过
+                    <?php elseif($v['rev_status']=='F'):?>
+                    <span style="color: red">操作异常</span>
+                    <?php else:?>
+                    已通过
+                    <?php endif;?>
+                </td>
+                <td>
+                    <span class="rev_time"><?php echo date("Y-m-d H:i:s",$v['rev_timestamp'])?></span>
+                </td>
+                <td>
+                    <?php if($v['rev_operator']):?>
+                    <?php echo $v['rev_operator']?>
+                    <?php endif;?>
+                </td>
+                <td>
+                    <?php if($v['operation_time']):?>
+                    <span class="rev_time"><?php echo date("Y-m-d H:i:s",$v['operation_time'])?></span>
+                    <?php endif;?>
+                </td>
+            </tr>
+            <?php endif;?>
+            <?php endforeach;?>
+            <?php endif;?>
+            </tbody>
+        </table>
+        <div class="pagination pagination-right">
+            <ul>
+                <?=$page_str?>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
+<script>
+    //这是单个同意操作
+    function agree(id,wiki_name,wiki_tiitle){
+
+        var code = id+"-"+''+"-"+''+"-"+''+"-"+wiki_name+"-"+wiki_tiitle+"/";
+        $.ajax({
+            url:"?c=audit&a=revisionAgree",
+            type:"post",
+            async: false,
+            data:{"id":code},
+            success:function(msg){
+                var json = eval('(' + msg + ')');
+                if(json['rs']==0){
+                    alert("通过成功！");
+                    window.location.href = "?c=audit&a=index";
+                }else{
+                    alert("通过失败！");
+                }
+            }
+        })
+    }
+
+    //这里是单个删除操作
+    function del(id,name,page,rev_id,text_id,rev_title){
+        if(confirm('确实要删除吗?')){
+            var code = id+"-"+rev_id+"-"+page+"-"+text_id+"-"+name+"-"+rev_title+"/";
+            $.ajax({
+                url:"?c=audit&a=revisionDelete",
+                type:"post",
+                async: false,
+                data:{"id":code},
+                success:function(msg){
+                    var json = eval('(' + msg + ')');
+                    if(json['rs']==0){
+                        alert("删除成功！");
+                        window.location.href = "?c=audit&a=index";
+                    }else{
+                        alert("删除失败！");
+                    }
+                }
+            })
+        }
+    }
+
+    //这里是批量操作------删除/通过
+    $(".update1").click(function(){
+        //获取要批量通过的ID
+        var checkon = new Array();
+        $("input[name='one']:checked").each(function() {
+            checkon.push($(this).val());
+        });
+
+        //这里判断是通过还是删除
+        var stu = $("#updatestate").find("option:selected").val();
+        if(stu == 1){
+            stu = 'Y';
+        }else{
+            stu = 'D';
+        }
+        var json={};
+        //循环获取选中的ID相关信息
+        if(checkon!=''){
+            var code = "";
+            var str = '';
+            for(var i=0;i<checkon.length;i++){
+                var vthis=$("#"+checkon[i]);
+                var page = vthis.parent('td').siblings().find('#page').val();
+                var rev_id = vthis.parent('td').siblings().find('#rev_id').val();
+                var text_id = vthis.parent('td').siblings().find('#text_id').val();
+                var name = vthis.parent('td').siblings().find('#name').val();
+                var title = vthis.parent('td').siblings().find('#title').val();
+                var stat = vthis.parent('td').siblings().find('#stat').val();
+                code += checkon[i]+"-"+rev_id+"-"+page+"-"+text_id+"-"+name+"-"+title+"/";
+                //如果所选数据里含有当前要改的状态
+                if(stat == stu){
+                    var flag = true;
+                    str += vthis.val()+"-";
+                }
+            }
+            if(flag){
+                var tishi = "ID为"+str+"已是此状态，不能再进行此操作";
+                alert(tishi);
+                return false;
+            }
+        }
+        json['revisionInfo'] = checkon;
+        json['code'] = code;
+        json['stu'] = stu;
+        if(checkon!=""){
+            if(confirm('确实要批量操作吗?')){
+                $.post("?c=audit&a=batchOperationRevision", json );
+                alert("已发送请求");
+                window.location.href = "?c=audit&a=index";
+            }
+        }else{
+            alert("请您先勾选数据！");
+        }
+    })
+
+    //全选反选
+    function se(a){
+        switch (a){
+            case 0:
+                if($("#SelectAll").attr("checked")){
+                    $("input[name='one']").attr("checked",true);
+                }else{
+                    $("input[name='one']").attr("checked",false);
+                }
+                break;
+            case 1:
+                if($("#SelectAll").attr("checked")){
+                    $("#SelectAll").attr("checked",false);
+                }
+                $("input[name='one']").each(function(){
+                    $(this).attr("checked",!this.checked);
+                })
+                break;
+            case 2:
+                $("input[name='one']").attr("checked",false);
+                break;
+        }
+    }
+</script>
+<script>
+    $(".active a").css('background-color','#5bb75b');
+    $(".active a").css('color','black');
+</script>

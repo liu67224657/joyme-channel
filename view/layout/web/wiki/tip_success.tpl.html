@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        span{color: red;}
+    </style>
+</head>
+<script src="<?=$data['static_url']?>/js/jquery-1.9.1.min.js"></script>
+<body>
+<div style="border:1px solid;width:600px;height:100px;margin-left: auto;margin-right: auto;margin-top: 250px;">
+    <p>新WIKI已创建成功，为防止域名访问出现问题，请在<span id="t_m"></span><span id="t_s"></span>后访问新创建的的WIKI!</p>
+    <input type="button" value="请耐心等待,请勿做其他操作!" style="margin-left: 200px;">
+</div>
+<input type="hidden" id="timey" value="<?php echo $data['y']?>">
+<input type="hidden" id="timem" value="<?php echo $data['m']?>">
+<input type="hidden" id="timed" value="<?php echo $data['d']?>">
+<input type="hidden" id="timeh" value="<?php echo $data['h']?>">
+<input type="hidden" id="timei" value="<?php echo $data['i']?>">
+<input type="hidden" id="times" value="<?php echo $data['s']?>">
+</body>
+</html>
+<script>
+
+    var y1 = $('#timey').val();
+    var m2 = $('#timem').val();
+    var d3 = $('#timed').val();
+    var h4 = $('#timeh').val();
+    var i5 = $('#timei').val();
+    var s6 = $('#times').val();
+
+    function getRTime(){
+
+        var EndTime= new Date(y1+'/'+m2+'/'+d3+' '+h4+':'+i5+':'+s6);
+        var NowTime = new Date();
+        var t =EndTime.getTime() - NowTime.getTime();
+        var d=Math.floor(t/1000/60/60/24);
+        var h=Math.floor(t/1000/60/60%24);
+        var m=Math.floor(t/1000/60%60);
+        var s=Math.floor(t/1000%60);
+
+        document.getElementById("t_m").innerHTML = m + "分";
+        document.getElementById("t_s").innerHTML = s + "秒";
+        if(m<=0 && s<=0){
+            window.location.href = '?c=joymewiki&a=againReloadNginx';
+        }
+    }
+    setInterval(getRTime,1000);
+</script>
